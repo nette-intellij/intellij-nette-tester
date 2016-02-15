@@ -1,0 +1,31 @@
+<idea-plugin version="2">
+  <id>cz.jiripudil.intellij.nette.tester</id>
+  <name>Nette Tester</name>
+  <version>0.1</version>
+  <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
+
+  <description><![CDATA[
+      This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
+      into PhpStorm IDE.
+    ]]></description>
+
+  <change-notes><![CDATA[
+      0.1 - initial version
+    ]]>
+  </change-notes>
+
+  <idea-version since-build="141.0"/>
+
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.jetbrains.php</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <testFramework implementation="cz.jiripudil.intellij.nette.tester.NetteTesterFramework"/>
+    <fileTypeFactory implementation="cz.jiripudil.intellij.nette.tester.fileType.TestFileTypeFactory"/>
+
+    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterConfigurationType"/>
+  </extensions>
+
+  <actions/>
+
+</idea-plugin>
