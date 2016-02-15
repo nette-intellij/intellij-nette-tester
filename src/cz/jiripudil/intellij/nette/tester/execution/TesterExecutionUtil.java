@@ -39,7 +39,7 @@ public class TesterExecutionUtil {
         command.addArgument(settings.testScope);
     }
 
-    public static ConsoleView createConsole(Project project, ProcessHandler processHandler, ExecutionEnvironment executionEnvironment, TesterLocationProvider locationProvider) {
+    public static ConsoleView createConsole(Project project, ProcessHandler processHandler, ExecutionEnvironment executionEnvironment, TesterTestLocator locationProvider) {
         PhpRunConfiguration profile = (PhpRunConfiguration) executionEnvironment.getRunProfile();
 
         TesterConsoleProperties properties = new TesterConsoleProperties(profile, executionEnvironment.getExecutor(), locationProvider);

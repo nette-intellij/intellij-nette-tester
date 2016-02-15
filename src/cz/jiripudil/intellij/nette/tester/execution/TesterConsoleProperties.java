@@ -6,6 +6,7 @@ import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.execution.testframework.sm.runner.SMTestLocator;
 import com.jetbrains.php.run.PhpRunConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TesterConsoleProperties<T extends PhpRunConfiguration & LocatableConfiguration> extends SMTRunnerConsoleProperties {
     private final SMTestLocator locator;
@@ -15,7 +16,9 @@ public class TesterConsoleProperties<T extends PhpRunConfiguration & LocatableCo
         this.locator = locator;
     }
 
-    public SMTestLocator getLocator() {
+    @Nullable
+    @Override
+    public SMTestLocator getTestLocator() {
         return locator;
     }
 }

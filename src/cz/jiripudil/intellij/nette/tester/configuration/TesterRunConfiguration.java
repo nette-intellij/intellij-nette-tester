@@ -26,7 +26,7 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper;
 import cz.jiripudil.intellij.nette.tester.configuration.editor.TesterRunConfigurationEditor;
 import cz.jiripudil.intellij.nette.tester.configuration.settings.TesterSettings;
 import cz.jiripudil.intellij.nette.tester.execution.TesterExecutionUtil;
-import cz.jiripudil.intellij.nette.tester.execution.TesterLocationProvider;
+import cz.jiripudil.intellij.nette.tester.execution.TesterTestLocator;
 import cz.jiripudil.intellij.nette.tester.version.TesterUnknownVersion;
 import cz.jiripudil.intellij.nette.tester.version.TesterVersion;
 import cz.jiripudil.intellij.nette.tester.version.TesterVersionDetector;
@@ -127,7 +127,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
                 ProcessHandler processHandler = this.startProcess();
 
                 PhpPathMapper pathMapper = command.getPathProcessor().createPathMapper(getProject());
-                TesterLocationProvider locationProvider = TesterLocationProvider.create(pathMapper);
+                TesterTestLocator locationProvider = TesterTestLocator.create(pathMapper);
                 ConsoleView consoleView = TesterExecutionUtil.createConsole(getProject(), processHandler, executionEnvironment, locationProvider);
                 PhpExecutionUtil.addMessageFilters(getProject(), consoleView, locationProvider.getPathMapper());
                 return new DefaultExecutionResult(consoleView, processHandler);
