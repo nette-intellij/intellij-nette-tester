@@ -22,6 +22,8 @@ import javax.swing.*;
 
 
 public class NetteTesterFramework implements TestFramework {
+    public static final String MIN_SUPPORTED_VERSION = "6.6.6";
+
     @NotNull
     @Override
     public String getName() {

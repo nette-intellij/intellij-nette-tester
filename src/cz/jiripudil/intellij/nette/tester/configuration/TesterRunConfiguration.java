@@ -23,6 +23,7 @@ import com.jetbrains.php.run.PhpExecutionUtil;
 import com.jetbrains.php.run.PhpRunConfiguration;
 import com.jetbrains.php.run.PhpRunUtil;
 import com.jetbrains.php.util.pathmapper.PhpPathMapper;
+import cz.jiripudil.intellij.nette.tester.NetteTesterFramework;
 import cz.jiripudil.intellij.nette.tester.configuration.editor.TesterRunConfigurationEditor;
 import cz.jiripudil.intellij.nette.tester.configuration.settings.TesterSettings;
 import cz.jiripudil.intellij.nette.tester.execution.TesterExecutionUtil;
@@ -80,8 +81,8 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
                     if (version instanceof TesterUnknownVersion) {
                         throw new RuntimeConfigurationError("Unable to determine Tester version.");
 
-                    } else if (VersionComparatorUtil.compare(version.getVersion(), "1.8.0") < 0) {
-                        throw new RuntimeConfigurationError("Tester plugin requires Nette Tester 1.8.0 and above, " + version.getVersion() + " found.");
+                    } else if (VersionComparatorUtil.compare(version.getVersion(), NetteTesterFramework.MIN_SUPPORTED_VERSION) < 0) {
+                        throw new RuntimeConfigurationError("Tester plugin requires Nette Tester with TeamCity output format support (" + version.getVersion() + " found).");
                     }
 
                 } catch (ExecutionException e) {
