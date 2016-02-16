@@ -1,18 +1,24 @@
 <idea-plugin version="2">
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>0.1</version>
+  <version>1.0-beta</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
 
   <description><![CDATA[
-      This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
-      into PhpStorm IDE.
-    ]]></description>
+    <a href="https://github.com/jiripudil/intellij-nette-tester">Github</a>
+
+    <p>This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
+    into PhpStorm IDE.</p>
+  ]]></description>
 
   <change-notes><![CDATA[
-      0.1 - initial version
-    ]]>
-  </change-notes>
+    <h2>1.0-beta</h2>
+    <p>Initial beta version with basic capabilities:</p>
+    <ul>
+      <li>Tester run configuration type and editor.</li>
+      <li>Displays results in the Test Runner window.</li>
+    </ul>
+  ]]></change-notes>
 
   <idea-version since-build="141.0"/>
 
