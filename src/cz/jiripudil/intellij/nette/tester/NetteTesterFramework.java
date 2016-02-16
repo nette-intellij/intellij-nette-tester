@@ -27,7 +27,7 @@ public class NetteTesterFramework implements TestFramework {
     @NotNull
     @Override
     public String getName() {
-        return "Nette/Tester";
+        return "Nette Tester";
     }
 
     @NotNull

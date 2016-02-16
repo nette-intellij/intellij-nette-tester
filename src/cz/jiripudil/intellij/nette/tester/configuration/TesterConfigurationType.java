@@ -5,7 +5,7 @@ import com.jetbrains.php.PhpIcons;
 
 public class TesterConfigurationType extends ConfigurationTypeBase {
     protected TesterConfigurationType() {
-        super("nette-tester", "Nette/Tester", "Run tests via Nette/Tester", PhpIcons.PHP_TEST_FILE);
+        super("nette-tester", "Nette Tester", "Run tests via Nette/Tester", PhpIcons.PHP_TEST_FILE);
         this.addFactory(new TesterConfigurationFactory(this));
     }
 }
