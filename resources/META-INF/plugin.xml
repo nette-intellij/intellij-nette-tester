@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>1.0-beta</version>
+  <version>1.0-alpha</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
 
   <description><![CDATA[
@@ -12,8 +12,8 @@
   ]]></description>
 
   <change-notes><![CDATA[
-    <h2>1.0-beta</h2>
-    <p>Initial beta version with basic capabilities:</p>
+    <h2>1.0-alpha</h2>
+    <p>Initial alpha version with basic capabilities:</p>
     <ul>
       <li>Tester run configuration type and editor.</li>
       <li>Displays results in the Test Runner window.</li>
