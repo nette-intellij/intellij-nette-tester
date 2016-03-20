@@ -16,7 +16,13 @@ public class TesterVersionDetector extends PhpTestFrameworkVersionDetector<Teste
         return "Detecting Nette Tester version";
     }
 
-    @Nullable
+    @NotNull
+    @Override
+    protected String getPresentableName() {
+        return "Nette Tester";
+    }
+
+    @NotNull
     @Override
     protected TesterVersion parse(@NotNull String s) {
         Pattern pattern = Pattern.compile("v((\\d+)\\.?)*");
