@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>1.0-alpha</version>
+  <version>1.0-alpha2</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
 
   <description><![CDATA[
@@ -12,6 +12,11 @@
   ]]></description>
 
   <change-notes><![CDATA[
+    <h2>1.0-alpha2</h2>
+    <ul>
+      <li>Fixed compatibility with PhpStorm 2016.1.</li>
+    </ul>
+
     <h2>1.0-alpha</h2>
     <p>Initial alpha version with basic capabilities:</p>
     <ul>
