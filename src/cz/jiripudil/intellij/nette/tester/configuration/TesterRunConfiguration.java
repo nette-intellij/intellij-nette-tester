@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> {
-    protected TesterRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
+    TesterRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
     }
 
@@ -62,7 +62,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
             TesterSettings settings = getSettings();
             VirtualFile scopeDirectory = PhpRunUtil.findDirectory(settings.testScope);
             PsiFile scopeFile = PhpRunUtil.findPsiFile(getProject(), settings.testScope);
-            if (settings.testScope == null || settings.testerExecutable.isEmpty()) {
+            if (settings.testScope == null) {
                 throw new RuntimeConfigurationError("You must specify the test scope.");
 
             } else if (scopeDirectory == null && scopeFile == null) {
@@ -94,19 +94,18 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
                 throw new RuntimeConfigurationError("The php.ini file was not found at given path.");
             }
 
-            PhpRunUtil.checkPhpInterpreter(getProject());
-            PhpRunUtil.checkCommandLineSettings(settings.getPhpCommandLineSettings());
+            PhpRunUtil.checkCommandLineSettings(getProject(), settings.getPhpCommandLineSettings());
         }
     }
 
     @Nullable
     @Override
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
-        return this.getState(executionEnvironment, this.createCommand(Collections.<String, String>emptyMap(), Collections.<String>emptyList(), false));
+        return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), false));
     }
 
     @Nullable
-    public RunProfileState getState(@NotNull final ExecutionEnvironment executionEnvironment, @NotNull final PhpCommandSettings command) throws ExecutionException {
+    private RunProfileState getState(@NotNull final ExecutionEnvironment executionEnvironment, @NotNull final PhpCommandSettings command) throws ExecutionException {
         try {
             this.checkConfiguration();
         } catch (RuntimeConfigurationException e) {
@@ -117,7 +116,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
             @NotNull
             @Override
             protected ProcessHandler startProcess() throws ExecutionException {
-                ProcessHandler processHandler = createProcessHandler(getProject(), command);
+                ProcessHandler processHandler = createProcessHandler(getProject(), null, command);
                 PhpRunUtil.attachProcessOutputDebugDumper(processHandler);
                 ProcessTerminatedListener.attach(processHandler, getProject());
                 return processHandler;
@@ -137,7 +136,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
     }
 
     @NotNull
-    public final PhpCommandSettings createCommand(Map<String, String> envParameters, List<String> arguments, boolean withDebuggerOptions) throws ExecutionException {
+    private PhpCommandSettings createCommand(Map<String, String> envParameters, List<String> arguments, boolean withDebuggerOptions) throws ExecutionException {
         PhpInterpreter interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
         if (interpreter == null) {
             throw new ExecutionException(PhpCommandSettingsBuilder.INTERPRETER_NOT_FOUND_ERROR);

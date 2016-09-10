@@ -38,7 +38,7 @@ public class TesterVersionDetector extends PhpTestFrameworkVersionDetector<Teste
 
     @NotNull
     @Override
-    protected String getVersionOption() {
-        return "--help";
+    protected String[] getVersionOptions() {
+        return new String[]{"--help"};
     }
 }
