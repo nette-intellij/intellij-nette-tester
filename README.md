@@ -45,6 +45,14 @@ This plugin provides a new configuration type for Nette Tester:
 - **Tester options** allows you to specify options for Tester script (refer to the [docs](https://tester.nette.org/en/)). You don't need to specify `-p` option, the plugin automatically uses the PHP interpreter associated with the project. Also, path to ini file can be specified separately. And finally, do not force `-o`; this plugin relies on `teamcity` output format which it sets automatically.
 - **Path to php.ini** specifies the configuration file to use (`-c` option). You can leave this field blank, in which case tests will run without any configuration loaded.
 
+
+#### Usage on Windows
+
+Composer seems to do some necessary, but unfortunate transformations on vendor binaries. Therefore you need to point the **Tester executable** option to the actual PHP file in `/path/to/your/project/vendor/nette/tester/src/tester.php`.
+
+
+### Interpreting results
+
 If you now run this configuration, test results will start to show in the Test Runner window:
 
 ![Test results](doc/test_results.png)
