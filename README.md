@@ -1,5 +1,8 @@
 # Nette Tester integration into PhpStorm
 
+[![Version](http://phpstorm.espend.de/badge/8226/version)](https://plugins.jetbrains.com/plugin/8226)
+[![Downloads](http://phpstorm.espend.de/badge/8226/downloads)](https://plugins.jetbrains.com/plugin/8226)
+
 This plugin integrates [Nette Tester](https://tester.nette.org) into PhpStorm IDE.
 
 
