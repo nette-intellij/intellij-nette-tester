@@ -116,7 +116,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
             @NotNull
             @Override
             protected ProcessHandler startProcess() throws ExecutionException {
-                ProcessHandler processHandler = createProcessHandler(getProject(), null, command);
+                ProcessHandler processHandler = createProcessHandler(getProject(), command);
                 PhpRunUtil.attachProcessOutputDebugDumper(processHandler);
                 ProcessTerminatedListener.attach(processHandler, getProject());
                 return processHandler;
