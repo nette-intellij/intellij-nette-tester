@@ -19,7 +19,7 @@ import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
 import com.jetbrains.php.run.PhpExecutionUtil;
-import com.jetbrains.php.run.PhpRunConfiguration;
+import com.jetbrains.php.run.PhpRefactoringListenerRunConfiguration;
 import com.jetbrains.php.run.PhpRunUtil;
 import com.jetbrains.php.util.PhpConfigurationUtil;
 import com.jetbrains.php.util.pathmapper.PhpPathMapper;
@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> {
+public class TesterRunConfiguration extends PhpRefactoringListenerRunConfiguration<TesterSettings> {
     TesterRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
     }
@@ -172,5 +172,65 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
         settings.setTestScope(PhpConfigurationUtil.serializePath(settings.getTestScope()));
         settings.setPhpIniPath(PhpConfigurationUtil.serializePath(settings.getPhpIniPath()));
         settings.setSetupScriptPath(PhpConfigurationUtil.serializePath(settings.getSetupScriptPath()));
+    }
+
+    @NotNull
+    @Override
+    protected List<PhpRefValue<String>> getPathsToUpdate() {
+        List<PhpRefValue<String>> pathsToUpdate = super.getPathsToUpdate();
+
+        pathsToUpdate.add(new PhpRefValue<String>() {
+            @Nullable
+            @Override
+            public String getValue() {
+                return TesterRunConfiguration.this.getSettings().getTestScope();
+            }
+
+            @Override
+            public void setValue(@Nullable String newName) {
+                TesterRunConfiguration.this.getSettings().setTestScope(newName);
+            }
+        });
+
+        pathsToUpdate.add(new PhpRefValue<String>() {
+            @Nullable
+            @Override
+            public String getValue() {
+                return TesterRunConfiguration.this.getSettings().getTesterExecutable();
+            }
+
+            @Override
+            public void setValue(@Nullable String newName) {
+                TesterRunConfiguration.this.getSettings().setTesterExecutable(newName);
+            }
+        });
+
+        pathsToUpdate.add(new PhpRefValue<String>() {
+            @Nullable
+            @Override
+            public String getValue() {
+                return TesterRunConfiguration.this.getSettings().getPhpIniPath();
+            }
+
+            @Override
+            public void setValue(@Nullable String newName) {
+                TesterRunConfiguration.this.getSettings().setPhpIniPath(newName);
+            }
+        });
+
+        pathsToUpdate.add(new PhpRefValue<String>() {
+            @Nullable
+            @Override
+            public String getValue() {
+                return TesterRunConfiguration.this.getSettings().getSetupScriptPath();
+            }
+
+            @Override
+            public void setValue(@Nullable String newName) {
+                TesterRunConfiguration.this.getSettings().setSetupScriptPath(newName);
+            }
+        });
+
+        return pathsToUpdate;
     }
 }
