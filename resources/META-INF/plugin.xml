@@ -44,6 +44,8 @@
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterConfigurationType"/>
     <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
     <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
+
+    <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>
   </extensions>
 
   <actions/>
