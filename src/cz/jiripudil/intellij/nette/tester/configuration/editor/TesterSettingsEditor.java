@@ -13,37 +13,34 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration> {
-    private Project project;
+    @NotNull private final Project project;
 
     private JPanel panel;
     private TextFieldWithBrowseButton testScope;
     private TextFieldWithBrowseButton testerExecutable;
     private RawCommandLineEditor testerOptions;
-    private TextFieldWithBrowseButton phpIniPath;
     private TextFieldWithBrowseButton userSetupScript;
 
-    void init(Project project) {
+    TesterSettingsEditor(@NotNull final Project project) {
         this.project = project;
     }
 
     @Override
     protected void resetEditorFrom(@NotNull TesterRunConfiguration runConfiguration) {
         TesterSettings settings = runConfiguration.getSettings();
-        testScope.setText(settings.testScope);
-        testerExecutable.setText(settings.testerExecutable);
-        testerOptions.setText(settings.testerOptions);
-        phpIniPath.setText(settings.phpIniPath);
-        userSetupScript.setText(settings.setupScriptPath);
+        testScope.setText(settings.getTestScope());
+        testerExecutable.setText(settings.getTesterExecutable());
+        testerOptions.setText(settings.getTesterOptions());
+        userSetupScript.setText(settings.getSetupScriptPath());
     }
 
     @Override
     protected void applyEditorTo(@NotNull TesterRunConfiguration runConfiguration) throws ConfigurationException {
         TesterSettings settings = runConfiguration.getSettings();
-        settings.testScope = testScope.getText();
-        settings.testerExecutable = testerExecutable.getText();
-        settings.testerOptions = testerOptions.getText();
-        settings.phpIniPath = phpIniPath.getText();
-        settings.setupScriptPath = userSetupScript.getText();
+        settings.setTestScope(testScope.getText());
+        settings.setTesterExecutable(testerExecutable.getText());
+        settings.setTesterOptions(testerOptions.getText());
+        settings.setSetupScriptPath(userSetupScript.getText());
     }
 
     @NotNull
@@ -61,9 +58,6 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
 
         testerOptions = new RawCommandLineEditor();
         testerOptions.setDialogCaption("Options");
-
-        phpIniPath = new TextFieldWithBrowseButton();
-        phpIniPath.addBrowseFolderListener(null, null, null, FileChooserDescriptorFactory.createSingleFileDescriptor("ini"));
 
         userSetupScript = new TextFieldWithBrowseButton();
         userSetupScript.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("php"));

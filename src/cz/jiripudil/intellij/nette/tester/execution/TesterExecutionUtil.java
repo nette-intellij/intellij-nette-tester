@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
+import com.jetbrains.php.config.interpreters.PhpConfigurationOptionData;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
 import com.jetbrains.php.run.filters.XdebugCallStackFilter;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
@@ -27,13 +28,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TesterExecutionUtil {
-    public static void addCommandArguments(@NotNull PhpCommandSettings command, @NotNull PhpInterpreter interpreter, TesterSettings settings, List<String> arguments) throws ExecutionException {
-        command.addArgument("-p");
-        command.addArgument(interpreter.getPathToPhpExecutable());
+    public static void addCommandArguments(@NotNull Project project, @NotNull PhpCommandSettings command, TesterSettings settings, List<String> arguments) throws ExecutionException {
+        PhpInterpreter testEnvironmentInterpreter = settings.getPhpInterpreter(project);
+        if (testEnvironmentInterpreter != null && testEnvironmentInterpreter.getPathToPhpExecutable() != null) {
+            command.addArgument("-p");
+            command.addArgument(testEnvironmentInterpreter.getPathToPhpExecutable());
+        }
 
-        if (!StringUtil.isNotEmpty(settings.phpIniPath)) {
+        if (settings.getUseSystemPhpIni()) {
+            command.addArgument("-C");
+
+        } else if (!StringUtil.isEmpty(settings.getPhpIniPath())) {
             command.addArgument("-c");
-            command.addArgument(settings.phpIniPath);
+            command.addArgument(settings.getPhpIniPath());
         }
 
         try {
@@ -53,13 +60,18 @@ public class TesterExecutionUtil {
             throw new ExecutionException(e);
         }
 
-        if (!StringUtil.isEmpty(settings.testerOptions)) {
-            String[] optionsArray = settings.testerOptions.split(" ");
+        if (!StringUtil.isEmpty(settings.getTesterOptions())) {
+            String[] optionsArray = settings.getTesterOptions().split(" ");
             command.addArguments(Arrays.asList(optionsArray));
         }
 
+        for (PhpConfigurationOptionData configurationOption : settings.getPhpInterpreterOptions()) {
+            command.addArgument("-d");
+            command.addArgument(configurationOption.getName() + (!configurationOption.getValue().isEmpty() ? "=" + configurationOption.getValue() : ""));
+        }
+
         command.addArguments(arguments);
-        command.addArgument(settings.testScope);
+        command.addArgument(settings.getTestScope());
     }
 
     public static ConsoleView createConsole(Project project, ProcessHandler processHandler, ExecutionEnvironment executionEnvironment, TesterTestLocator locationProvider) {

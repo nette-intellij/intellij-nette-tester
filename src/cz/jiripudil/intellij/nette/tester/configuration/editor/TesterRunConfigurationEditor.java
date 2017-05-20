@@ -8,29 +8,37 @@ import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class TesterRunConfigurationEditor extends SettingsEditor<TesterRunConfiguration> {
-    private JPanel panel;
-    private TesterSettingsEditor testerSettingsEditor;
-    private PhpCommandLineSettingsEditor phpCommandLineSettingsEditor;
-    private JPanel testerSettingsPanel;
-    private JPanel cliSettingsPanel;
+    @NotNull private final Project project;
 
-    public void init(Project project) {
-        testerSettingsEditor.init(project);
-        phpCommandLineSettingsEditor.init(project);
+    private JPanel panel;
+
+    private JPanel testerSettingsPanel;
+    private TesterSettingsEditor testerSettingsEditor;
+
+    private JPanel testEnvironmentSettingsPanel;
+    private TesterTestEnvironmentSettingsEditor testEnvironmentSettingsEditor;
+
+    private JPanel cliSettingsPanel;
+    private PhpCommandLineSettingsEditor phpCommandLineSettingsEditor;
+
+    public TesterRunConfigurationEditor(@NotNull final Project project) {
+        super();
+        this.project = project;
     }
 
     @Override
-    protected void resetEditorFrom(TesterRunConfiguration runConfiguration) {
+    protected void resetEditorFrom(@NotNull TesterRunConfiguration runConfiguration) {
         testerSettingsEditor.resetEditorFrom(runConfiguration);
+        testEnvironmentSettingsEditor.resetEditorFrom(runConfiguration);
         phpCommandLineSettingsEditor.resetEditorFrom(runConfiguration);
     }
 
     @Override
-    protected void applyEditorTo(TesterRunConfiguration runConfiguration) throws ConfigurationException {
+    protected void applyEditorTo(@NotNull TesterRunConfiguration runConfiguration) throws ConfigurationException {
         testerSettingsEditor.applyEditorTo(runConfiguration);
+        testEnvironmentSettingsEditor.applyEditorTo(runConfiguration);
         phpCommandLineSettingsEditor.applyEditorTo(runConfiguration);
     }
 
@@ -43,8 +51,14 @@ public class TesterRunConfigurationEditor extends SettingsEditor<TesterRunConfig
     private void createUIComponents() {
         testerSettingsPanel = new JPanel();
         testerSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Nette Tester"));
+        testerSettingsEditor = new TesterSettingsEditor(project);
+
+        testEnvironmentSettingsPanel = new JPanel();
+        testEnvironmentSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Test Environment"));
+        testEnvironmentSettingsEditor = new TesterTestEnvironmentSettingsEditor(project);
 
         cliSettingsPanel = new JPanel();
         cliSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Command Line"));
+        phpCommandLineSettingsEditor = new PhpCommandLineSettingsEditor(project);
     }
 }

@@ -1,7 +1,6 @@
 package cz.jiripudil.intellij.nette.tester.configuration.editor;
 
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
-import com.intellij.execution.configuration.EnvironmentVariablesTextFieldWithBrowseButton;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
@@ -15,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class PhpCommandLineSettingsEditor extends SettingsEditor<TesterRunConfiguration> {
-    private Project project;
+    @NotNull final private Project project;
 
     private JPanel panel;
     private RawCommandLineEditor interpreterOptions;
     private TextFieldWithBrowseButton customWorkingDirectory;
     private EnvironmentVariablesComponent environmentVariables;
 
-    public void init(Project project) {
+    PhpCommandLineSettingsEditor(@NotNull final Project project) {
         this.project = project;
     }
 
@@ -37,7 +36,7 @@ public class PhpCommandLineSettingsEditor extends SettingsEditor<TesterRunConfig
     }
 
     @Override
-    protected void resetEditorFrom(TesterRunConfiguration runConfiguration) {
+    protected void resetEditorFrom(@NotNull TesterRunConfiguration runConfiguration) {
         PhpCommandLineSettings commandLineSettings = runConfiguration.getSettings().getPhpCommandLineSettings();
         interpreterOptions.setText(commandLineSettings.getParameters());
         customWorkingDirectory.setText(commandLineSettings.getWorkingDirectory());
@@ -46,7 +45,7 @@ public class PhpCommandLineSettingsEditor extends SettingsEditor<TesterRunConfig
     }
 
     @Override
-    protected void applyEditorTo(TesterRunConfiguration runConfiguration) throws ConfigurationException {
+    protected void applyEditorTo(@NotNull TesterRunConfiguration runConfiguration) throws ConfigurationException {
         PhpCommandLineSettings commandLineSettings = runConfiguration.getSettings().getPhpCommandLineSettings();
         commandLineSettings.setParameters(interpreterOptions.getText());
         commandLineSettings.setWorkingDirectory(customWorkingDirectory.getText());
