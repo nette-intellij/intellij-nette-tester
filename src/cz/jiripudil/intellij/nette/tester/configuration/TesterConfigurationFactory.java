@@ -6,8 +6,8 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-public class TesterConfigurationFactory extends ConfigurationFactory{
-    protected TesterConfigurationFactory(@NotNull ConfigurationType type) {
+public class TesterConfigurationFactory extends ConfigurationFactory {
+    TesterConfigurationFactory(@NotNull ConfigurationType type) {
         super(type);
     }
 

@@ -1,6 +1,7 @@
 package cz.jiripudil.intellij.nette.tester.configuration;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.xmlb.annotations.Property;
 import com.intellij.util.xmlb.annotations.Transient;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
@@ -29,9 +30,9 @@ public class TesterSettings implements PhpRunConfigurationSettings, Cloneable {
     @NotNull private PhpCommandLineSettings phpCommandLineSettings = new PhpCommandLineSettings();
 
     @Property
-    @Nullable
+    @NotNull
     public String getTestScope() {
-        return testScope;
+        return StringUtil.notNullize(testScope);
     }
 
     public void setTestScope(@Nullable String testScope) {
@@ -39,9 +40,9 @@ public class TesterSettings implements PhpRunConfigurationSettings, Cloneable {
     }
 
     @Property
-    @Nullable
+    @NotNull
     public String getTesterExecutable() {
-        return testerExecutable;
+        return StringUtil.notNullize(testerExecutable);
     }
 
     public void setTesterExecutable(@Nullable String testerExecutable) {

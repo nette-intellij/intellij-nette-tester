@@ -42,6 +42,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterConfigurationType"/>
+    <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
     <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
   </extensions>
 

@@ -12,8 +12,12 @@ import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.PathUtil;
+import com.intellij.util.xmlb.annotations.Attribute;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder;
@@ -26,6 +30,7 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper;
 import cz.jiripudil.intellij.nette.tester.configuration.editor.TesterRunConfigurationEditor;
 import cz.jiripudil.intellij.nette.tester.execution.TesterExecutionUtil;
 import cz.jiripudil.intellij.nette.tester.execution.TesterTestLocator;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +38,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TesterRunConfiguration extends PhpRefactoringListenerRunConfiguration<TesterSettings> {
+public class TesterRunConfiguration extends PhpRefactoringListenerRunConfiguration<TesterSettings> implements LocatableConfiguration {
+    private boolean isGenerated;
+
     TesterRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
     }
@@ -174,13 +181,48 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
         settings.setSetupScriptPath(PhpConfigurationUtil.serializePath(settings.getSetupScriptPath()));
     }
 
+    @Override
+    public void readExternal(Element element) throws InvalidDataException {
+        super.readExternal(element);
+
+        if (!isNewSerializationUsed()) {
+            isGenerated = "true".equals(element.getAttributeValue("isGeneratedName"));
+        }
+    }
+
+    @Override
+    public void writeExternal(Element element) throws WriteExternalException {
+        if (!isNewSerializationUsed() && isGeneratedName()) {
+            element.setAttribute("isGeneratedName", "true");
+        }
+
+        super.writeExternal(element);
+    }
+
+    @Attribute("isGeneratedName")
+    @Override
+    public boolean isGeneratedName() {
+        return isGenerated && PhpRunUtil.isGeneratedName(this);
+    }
+
+    void setGeneratedName(@Nullable String name) {
+        setName(name);
+        isGenerated = true;
+    }
+
+    @Nullable
+    @Override
+    public String suggestedName() {
+        return PathUtil.getFileName(getSettings().getTestScope());
+    }
+
     @NotNull
     @Override
     protected List<PhpRefValue<String>> getPathsToUpdate() {
         List<PhpRefValue<String>> pathsToUpdate = super.getPathsToUpdate();
 
         pathsToUpdate.add(new PhpRefValue<String>() {
-            @Nullable
+            @NotNull
             @Override
             public String getValue() {
                 return TesterRunConfiguration.this.getSettings().getTestScope();
@@ -193,7 +235,7 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
         });
 
         pathsToUpdate.add(new PhpRefValue<String>() {
-            @Nullable
+            @NotNull
             @Override
             public String getValue() {
                 return TesterRunConfiguration.this.getSettings().getTesterExecutable();
