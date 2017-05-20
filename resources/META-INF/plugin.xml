@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
   <version>1.0.0-alpha.4</version>
@@ -41,9 +41,6 @@
   <depends>com.jetbrains.php</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <testFramework implementation="cz.jiripudil.intellij.nette.tester.NetteTesterFramework"/>
-    <fileTypeFactory implementation="cz.jiripudil.intellij.nette.tester.fileType.TestFileTypeFactory"/>
-
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterConfigurationType"/>
   </extensions>
 
