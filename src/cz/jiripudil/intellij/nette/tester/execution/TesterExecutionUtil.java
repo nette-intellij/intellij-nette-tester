@@ -9,8 +9,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
-import com.jetbrains.php.run.PhpRunConfiguration;
 import com.jetbrains.php.run.filters.XdebugCallStackFilter;
+import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.configuration.settings.TesterSettings;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +40,7 @@ public class TesterExecutionUtil {
     }
 
     public static ConsoleView createConsole(Project project, ProcessHandler processHandler, ExecutionEnvironment executionEnvironment, TesterTestLocator locationProvider) {
-        PhpRunConfiguration profile = (PhpRunConfiguration) executionEnvironment.getRunProfile();
+        TesterRunConfiguration profile = (TesterRunConfiguration) executionEnvironment.getRunProfile();
 
         TesterConsoleProperties properties = new TesterConsoleProperties(profile, executionEnvironment.getExecutor(), locationProvider);
         properties.addStackTraceFilter(new XdebugCallStackFilter(project, locationProvider.getPathMapper()));
