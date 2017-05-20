@@ -3,6 +3,7 @@ package cz.jiripudil.intellij.nette.tester.configuration;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.annotations.Property;
 import com.intellij.util.xmlb.annotations.Transient;
+import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.config.interpreters.PhpConfigurationOptionData;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl;
@@ -76,7 +77,9 @@ public class TesterSettings implements PhpRunConfigurationSettings, Cloneable {
     @Transient
     @Nullable
     public PhpInterpreter getPhpInterpreter(@NotNull Project project) {
-        return PhpInterpretersManagerImpl.getInstance(project).findInterpreterById(phpInterpreterId);
+        return phpInterpreterId != null
+            ? PhpInterpretersManagerImpl.getInstance(project).findInterpreterById(phpInterpreterId)
+            : PhpProjectConfigurationFacade.getInstance(project).getInterpreter();
     }
 
     public void setPhpInterpreterId(@Nullable String phpInterpreterId) {
