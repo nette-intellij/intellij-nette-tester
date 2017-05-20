@@ -13,8 +13,6 @@ import com.intellij.execution.ui.ConsoleView;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.util.text.VersionComparatorUtil;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder;
@@ -22,15 +20,11 @@ import com.jetbrains.php.config.interpreters.PhpInterpreter;
 import com.jetbrains.php.run.PhpExecutionUtil;
 import com.jetbrains.php.run.PhpRunConfiguration;
 import com.jetbrains.php.run.PhpRunUtil;
+import com.jetbrains.php.util.PhpConfigurationUtil;
 import com.jetbrains.php.util.pathmapper.PhpPathMapper;
-import cz.jiripudil.intellij.nette.tester.NetteTesterFramework;
 import cz.jiripudil.intellij.nette.tester.configuration.editor.TesterRunConfigurationEditor;
-import cz.jiripudil.intellij.nette.tester.configuration.settings.TesterSettings;
 import cz.jiripudil.intellij.nette.tester.execution.TesterExecutionUtil;
 import cz.jiripudil.intellij.nette.tester.execution.TesterTestLocator;
-import cz.jiripudil.intellij.nette.tester.version.TesterUnknownVersion;
-import cz.jiripudil.intellij.nette.tester.version.TesterVersion;
-import cz.jiripudil.intellij.nette.tester.version.TesterVersionDetector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,10 +52,13 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
         if (interpreter == null) {
             throw new RuntimeConfigurationError(PhpCommandSettingsBuilder.INTERPRETER_NOT_FOUND_ERROR);
 
+        } else if (interpreter.getPathToPhpExecutable() == null) {
+            throw new RuntimeConfigurationError("PHP executable not found.");
+
         } else {
             TesterSettings settings = getSettings();
             VirtualFile scopeDirectory = PhpRunUtil.findDirectory(settings.testScope);
-            PsiFile scopeFile = PhpRunUtil.findPsiFile(getProject(), settings.testScope);
+            VirtualFile scopeFile = PhpRunUtil.findFile(settings.testScope);
             if (settings.testScope == null) {
                 throw new RuntimeConfigurationError("You must specify the test scope.");
 
@@ -72,26 +69,16 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
             if (settings.testerExecutable == null || settings.testerExecutable.isEmpty()) {
                 throw new RuntimeConfigurationError("You must specify path to Tester executable.");
 
-            } else if (PhpRunUtil.findPsiFile(getProject(), settings.testerExecutable) == null) {
+            } else if (PhpRunUtil.findFile(settings.testerExecutable) == null) {
                 throw new RuntimeConfigurationError("Tester executable was not found at given path.");
-
-            } else {
-                try {
-                    TesterVersion version = TesterVersionDetector.INSTANCE.getVersion(getProject(), interpreter, settings.testerExecutable);
-                    if (version instanceof TesterUnknownVersion) {
-                        throw new RuntimeConfigurationError("Unable to determine Tester version.");
-
-                    } else if (VersionComparatorUtil.compare(version.getVersion(), NetteTesterFramework.MIN_SUPPORTED_VERSION) < 0) {
-                        throw new RuntimeConfigurationError("Tester plugin requires Nette Tester with TeamCity output format support (" + version.getVersion() + " found).");
-                    }
-
-                } catch (ExecutionException e) {
-                    throw new RuntimeConfigurationError("Tester executable could not be executed: " + e.getMessage());
-                }
             }
 
             if (settings.phpIniPath != null && !settings.phpIniPath.isEmpty() && PhpRunUtil.findFile(settings.phpIniPath) == null) {
                 throw new RuntimeConfigurationError("The php.ini file was not found at given path.");
+            }
+
+            if (settings.setupScriptPath != null && !settings.setupScriptPath.isEmpty() && PhpRunUtil.findFile(settings.setupScriptPath) == null) {
+                throw new RuntimeConfigurationError("The setup script file was not found at given path.");
             }
 
             PhpRunUtil.checkCommandLineSettings(getProject(), settings.getPhpCommandLineSettings());
@@ -104,7 +91,7 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
         return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), false));
     }
 
-    @Nullable
+    @NotNull
     private RunProfileState getState(@NotNull final ExecutionEnvironment executionEnvironment, @NotNull final PhpCommandSettings command) throws ExecutionException {
         try {
             this.checkConfiguration();
@@ -148,6 +135,11 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
             command.importCommandLineSettings(getSettings().getPhpCommandLineSettings(), null);
             command.addEnvs(envParameters);
 
+            // support for user setup
+            if (getSettings().setupScriptPath != null) {
+                command.addEnv("INTELLIJ_NETTE_TESTER_USER_SETUP", getSettings().setupScriptPath);
+            }
+
             TesterExecutionUtil.addCommandArguments(command, interpreter, getSettings(), arguments);
 
             return command;
@@ -158,5 +150,21 @@ public class TesterRunConfiguration extends PhpRunConfiguration<TesterSettings> 
     @Override
     protected TesterSettings createSettings() {
         return new TesterSettings();
+    }
+
+    @Override
+    protected void fixSettingsAfterDeserialization(@NotNull TesterSettings settings) {
+        settings.testerExecutable = PhpConfigurationUtil.deserializePath(settings.testerExecutable);
+        settings.testScope = PhpConfigurationUtil.deserializePath(settings.testScope);
+        settings.phpIniPath = PhpConfigurationUtil.deserializePath(settings.phpIniPath);
+        settings.setupScriptPath = PhpConfigurationUtil.deserializePath(settings.setupScriptPath);
+    }
+
+    @Override
+    protected void fixSettingsBeforeSerialization(@NotNull TesterSettings settings) {
+        settings.testerExecutable = PhpConfigurationUtil.serializePath(settings.testerExecutable);
+        settings.testScope = PhpConfigurationUtil.serializePath(settings.testScope);
+        settings.phpIniPath = PhpConfigurationUtil.serializePath(settings.phpIniPath);
+        settings.setupScriptPath = PhpConfigurationUtil.serializePath(settings.setupScriptPath);
     }
 }

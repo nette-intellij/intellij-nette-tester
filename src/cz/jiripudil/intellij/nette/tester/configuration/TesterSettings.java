@@ -1,4 +1,4 @@
-package cz.jiripudil.intellij.nette.tester.configuration.settings;
+package cz.jiripudil.intellij.nette.tester.configuration;
 
 import com.jetbrains.php.run.PhpCommandLineSettings;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +8,7 @@ public class TesterSettings implements Cloneable {
     public String testerExecutable;
     public String testerOptions;
     public String phpIniPath;
+    public String setupScriptPath;
 
     private PhpCommandLineSettings phpCommandLineSettings = new PhpCommandLineSettings();
 
@@ -24,6 +25,8 @@ public class TesterSettings implements Cloneable {
         if (testerOptions != null ? !testerOptions.equals(that.testerOptions) : that.testerOptions != null)
             return false;
         if (phpIniPath != null ? !phpIniPath.equals(that.phpIniPath) : that.phpIniPath != null) return false;
+        if (setupScriptPath != null ? !setupScriptPath.equals(that.setupScriptPath) : that.setupScriptPath != null) return false;
+
         return phpCommandLineSettings.equals(that.getPhpCommandLineSettings());
     }
 
@@ -33,6 +36,7 @@ public class TesterSettings implements Cloneable {
         result = 31 * result + (testerExecutable != null ? testerExecutable.hashCode() : 0);
         result = 31 * result + (testerOptions != null ? testerOptions.hashCode() : 0);
         result = 31 * result + (phpIniPath != null ? phpIniPath.hashCode() : 0);
+        result = 31 * result + (setupScriptPath != null ? setupScriptPath.hashCode() : 0);
         result = 31 * result + phpCommandLineSettings.hashCode();
         return result;
     }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class TesterConsoleProperties extends SMTRunnerConsoleProperties {
     private final SMTestLocator locator;
 
-    public TesterConsoleProperties(@NotNull TesterRunConfiguration config, Executor executor, SMTestLocator locator) {
+    TesterConsoleProperties(@NotNull TesterRunConfiguration config, Executor executor, SMTestLocator locator) {
         super(config, "Nette Tester", executor);
         this.locator = locator;
     }

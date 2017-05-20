@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
-import cz.jiripudil.intellij.nette.tester.configuration.settings.TesterSettings;
+import cz.jiripudil.intellij.nette.tester.configuration.TesterSettings;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -20,27 +20,30 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
     private TextFieldWithBrowseButton testerExecutable;
     private RawCommandLineEditor testerOptions;
     private TextFieldWithBrowseButton phpIniPath;
+    private TextFieldWithBrowseButton userSetupScript;
 
-    public void init(Project project) {
+    void init(Project project) {
         this.project = project;
     }
 
     @Override
-    protected void resetEditorFrom(TesterRunConfiguration runConfiguration) {
+    protected void resetEditorFrom(@NotNull TesterRunConfiguration runConfiguration) {
         TesterSettings settings = runConfiguration.getSettings();
         testScope.setText(settings.testScope);
         testerExecutable.setText(settings.testerExecutable);
         testerOptions.setText(settings.testerOptions);
         phpIniPath.setText(settings.phpIniPath);
+        userSetupScript.setText(settings.setupScriptPath);
     }
 
     @Override
-    protected void applyEditorTo(TesterRunConfiguration runConfiguration) throws ConfigurationException {
+    protected void applyEditorTo(@NotNull TesterRunConfiguration runConfiguration) throws ConfigurationException {
         TesterSettings settings = runConfiguration.getSettings();
         settings.testScope = testScope.getText();
         settings.testerExecutable = testerExecutable.getText();
         settings.testerOptions = testerOptions.getText();
         settings.phpIniPath = phpIniPath.getText();
+        settings.setupScriptPath = userSetupScript.getText();
     }
 
     @NotNull
@@ -61,5 +64,8 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
 
         phpIniPath = new TextFieldWithBrowseButton();
         phpIniPath.addBrowseFolderListener(null, null, null, FileChooserDescriptorFactory.createSingleFileDescriptor("ini"));
+
+        userSetupScript = new TextFieldWithBrowseButton();
+        userSetupScript.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("php"));
     }
 }

@@ -45,15 +45,15 @@ public class TesterTestLocator implements SMTestLocator {
     @Override
     public List<Location> getLocation(@NotNull String protocol, @NotNull String path, @NotNull Project project, @NotNull GlobalSearchScope globalSearchScope) {
         if (protocol.equals(PROTOCOL_FILE)) {
-            PsiElement element = findFile(path, project);
+            PsiFile element = findFile(path, project);
             if (element != null) {
-                return Collections.<Location>singletonList(new PsiLocation(project, element));
+                return Collections.singletonList(new PsiLocation<>(project, element));
             }
 
         } else if (protocol.equals(PROTOCOL_METHOD)) {
-            PsiElement element = findMethod(path, project);
+            Method element = findMethod(path, project);
             if (element != null) {
-                return Collections.<Location>singletonList(new PsiLocation(project, element));
+                return Collections.singletonList(new PsiLocation<>(project, element));
             }
         }
 
@@ -93,9 +93,9 @@ public class TesterTestLocator implements SMTestLocator {
                 }
 
                 GlobalSearchScope scope = GlobalSearchScope.fileScope(project, file.getVirtualFile());
-                Collection methods = StubIndex.getElements(PhpMethodIndex.KEY, methodName, project, scope, Method.class);
+                Collection<Method> methods = StubIndex.getElements(PhpMethodIndex.KEY, methodName, project, scope, Method.class);
                 if (methods.size() == 1) {
-                    return (Method) methods.iterator().next();
+                    return methods.iterator().next();
                 }
             }
         }
