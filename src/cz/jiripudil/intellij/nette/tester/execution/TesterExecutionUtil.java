@@ -46,6 +46,7 @@ public class TesterExecutionUtil {
         properties.addStackTraceFilter(new XdebugCallStackFilter(project, locationProvider.getPathMapper()));
 
         BaseTestsOutputConsoleView testsOutputConsoleView = SMTestRunnerConnectionUtil.createConsole("Nette Tester", properties);
+        testsOutputConsoleView.addMessageFilter(new TesterStackTraceFilter(project, locationProvider.getPathMapper()));
         testsOutputConsoleView.attachToProcess(processHandler);
         Disposer.register(project, testsOutputConsoleView);
         return testsOutputConsoleView;
