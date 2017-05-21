@@ -1,0 +1,21 @@
+<?php
+#parse("PHP File Header.php")
+
+#if (${NAMESPACE})
+namespace ${NAMESPACE};
+#end
+
+use Tester\Assert;
+use Tester\TestCase;
+
+
+/**
+ * @testCase
+ */
+class ${NAME} extends TestCase
+{
+
+}
+
+
+(new ${NAME}())->run();

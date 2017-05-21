@@ -46,8 +46,29 @@
     <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
 
     <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>
+    <testCreator language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterTestCreator"/>
+    <internalFileTemplate name="Tester TestCase"/>
+
+    <projectService serviceImplementation="cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager"/>
+    <projectConfigurable
+      instance="cz.jiripudil.intellij.nette.tester.projectSettings.TesterConfigurable"
+      displayName="Nette Tester"
+      id="cz.jiripudil.intellij.nette.tester.projectSettings.TesterConfigurable"
+      parentId="reference.webide.settings.project.settings.php"
+      groupWeight="25"
+    />
   </extensions>
 
-  <actions/>
+  <actions>
+    <group id="TesterNewGroup" class="com.intellij.ide.actions.NonTrivialActionGroup" text="Nette Tester" popup="true" icon="PhpIcons.Phpunit">
+      <action id="TesterNewTestCase" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterNewTestCaseAction"/>
+      <add-to-group group-id="NewGroup" anchor="last"/>
+    </group>
+  </actions>
 
+  <application-components>
+    <component>
+      <implementation-class>cz.jiripudil.intellij.nette.tester.TesterTestCreatorEnabler</implementation-class>
+    </component>
+  </application-components>
 </idea-plugin>
