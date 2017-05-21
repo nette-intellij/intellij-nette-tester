@@ -22,6 +22,7 @@ import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.roots.ui.PhpNamespaceComboBox;
 import com.jetbrains.php.roots.ui.PhpPsrDirectoryComboBox;
 import com.jetbrains.php.ui.PhpUiUtil;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,12 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
     private EditorTextField fileNameTextField;
     private PhpPsrDirectoryComboBox directoryComboBox;
     private JBLabel directoryCompletionHint;
+
+    private JBLabel classToTestLabel;
+    private JBLabel testClassLabel;
+    private JBLabel namespaceLabel;
+    private JBLabel fileNameLabel;
+    private JBLabel directoryLabel;
 
     TesterNewTestCaseDialog(@NotNull Project project, @Nullable PsiDirectory directory, @Nullable PsiFile file) {
         super(project, directory);
@@ -72,9 +79,9 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
         PhpCompletionUtil.installClassCompletion(testTargetTextField, null, this.getDisposable());
 
         String codeCompletionShortcut = PhpUiUtil.getShortcutTextByActionName("CodeCompletion");
-        testTargetCompletionHint.setText("Use " + codeCompletionShortcut + " for class reference completion");
-        namespaceCompletionHint.setText("Use " + codeCompletionShortcut + " for namespace completion");
-        directoryCompletionHint.setText("Use " + codeCompletionShortcut + " for path completion");
+        testTargetCompletionHint.setText(TesterBundle.message("dialog.newTestCase.completionShortcut", codeCompletionShortcut, "class reference"));
+        namespaceCompletionHint.setText(TesterBundle.message("dialog.newTestCase.completionShortcut", codeCompletionShortcut, "namespace"));
+        directoryCompletionHint.setText(TesterBundle.message("dialog.newTestCase.completionShortcut", codeCompletionShortcut, "path"));
 
         this.addUpdateRequest(() -> {
             PhpClass phpClass = TesterTestCreator.findClass(file);
@@ -97,7 +104,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
     @Override
     protected void init() {
         super.init();
-        this.setTitle("Create Nette Tester TestCase");
+        this.setTitle(TesterBundle.message("dialog.newTestCase.title"));
     }
 
     @Nullable
@@ -159,6 +166,12 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
                 this.updateDirectories(TesterNewTestCaseDialog.this.getNamespace());
             }
         };
+
+        classToTestLabel = new JBLabel(TesterBundle.message("dialog.newTestCase.label.classToTest"));
+        testClassLabel = new JBLabel(TesterBundle.message("dialog.newTestCase.label.testClass"));
+        namespaceLabel = new JBLabel(TesterBundle.message("dialog.newTestCase.label.namespace"));
+        fileNameLabel = new JBLabel(TesterBundle.message("dialog.newTestCase.label.fileName"));
+        directoryLabel = new JBLabel(TesterBundle.message("dialog.newTestCase.label.directory"));
 
         testTargetCompletionHint = new JBLabel(UIUtil.ComponentStyle.MINI);
         namespaceCompletionHint = new JBLabel(UIUtil.ComponentStyle.MINI);

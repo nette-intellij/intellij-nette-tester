@@ -6,12 +6,13 @@ import com.intellij.psi.PsiFile;
 import com.jetbrains.php.PhpIcons;
 import com.jetbrains.php.actions.PhpNewBaseAction;
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TesterNewTestCaseAction extends PhpNewBaseAction {
     public TesterNewTestCaseAction() {
-        super("Nette Tester TestCase", "Creates a new Nette Tester TestCase", PhpIcons.PHP_TEST_FILE);
+        super(TesterBundle.message("action.newTestCase.name"), TesterBundle.message("action.newTestCase.description"), PhpIcons.PHP_TEST_FILE);
     }
 
     @Nullable

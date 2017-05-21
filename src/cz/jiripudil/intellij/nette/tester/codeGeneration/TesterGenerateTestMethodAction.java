@@ -9,12 +9,13 @@ import com.intellij.openapi.project.Project;
 import com.jetbrains.php.config.PhpLanguageFeature;
 import com.jetbrains.php.config.PhpLanguageLevel;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import org.jetbrains.annotations.NotNull;
 
 public class TesterGenerateTestMethodAction extends TesterAbstractGenerateMethodAction {
     public TesterGenerateTestMethodAction() {
-        getTemplatePresentation().setText("TestCase test method");
-        getTemplatePresentation().setDescription("Creates a Nette Tester test method");
+        getTemplatePresentation().setText(TesterBundle.message("action.generateTestMethod.name"));
+        getTemplatePresentation().setDescription(TesterBundle.message("action.generateTestMethod.description"));
     }
 
     @Override

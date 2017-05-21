@@ -3,6 +3,7 @@
   <name>Nette Tester</name>
   <version>1.0.0-alpha.4</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
+  <resource-bundle>messages.TesterBundle</resource-bundle>
 
   <description><![CDATA[
     <a href="https://github.com/jiripudil/intellij-nette-tester">Github</a>

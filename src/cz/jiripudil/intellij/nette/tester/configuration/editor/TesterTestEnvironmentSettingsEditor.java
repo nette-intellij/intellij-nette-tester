@@ -6,11 +6,13 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.components.JBCheckBox;
+import com.intellij.ui.components.JBLabel;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.config.interpreters.PhpConfigurationOptionsComponent;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
 import com.jetbrains.php.config.interpreters.PhpInterpreterComboBox;
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterSettings;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +28,10 @@ public class TesterTestEnvironmentSettingsEditor extends SettingsEditor<TesterRu
     private PhpConfigurationOptionsComponent interpreterOptions;
     private TextFieldWithBrowseButton phpIniPath;
     private JBCheckBox useSystemPhpIniCheckbox;
+
+    private JBLabel interpreterLabel;
+    private JBLabel interpreterOptionsLabel;
+    private JBLabel pathToPhpIniLabel;
 
     TesterTestEnvironmentSettingsEditor(@NotNull final Project project) {
         super();
@@ -81,6 +87,10 @@ public class TesterTestEnvironmentSettingsEditor extends SettingsEditor<TesterRu
         phpIniPath = new TextFieldWithBrowseButton();
         phpIniPath.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("ini"));
 
-        useSystemPhpIniCheckbox = new JBCheckBox();
+        useSystemPhpIniCheckbox = new JBCheckBox(TesterBundle.message("runConfiguration.editor.testEnv.useSystemPhpIni"));
+
+        interpreterLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.testEnv.interpreter"));
+        interpreterOptionsLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.testEnv.interpreterOptions"));
+        pathToPhpIniLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.testEnv.phpIni"));
     }
 }

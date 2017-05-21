@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.ListTableModel;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterNamespaceMapping;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,12 +17,12 @@ public class NamespaceMappingTable extends ListTableWithButtons<TesterNamespaceM
     NamespaceMappingTable(@NotNull final Project project) {
         super();
         this.project = project;
-        this.getTableView().getEmptyText().setText("No mappings");
+        this.getTableView().getEmptyText().setText(TesterBundle.message("settings.namespaceMappings.noMappings"));
     }
 
     @Override
     protected ListTableModel createListModel() {
-        ColumnInfo sourceNamespace = new ElementsColumnInfoBase<TesterNamespaceMapping>("Source namespace") {
+        ColumnInfo sourceNamespace = new ElementsColumnInfoBase<TesterNamespaceMapping>(TesterBundle.message("settings.namespaceMappings.sourceNamespace")) {
             @NotNull
             @Override
             public String valueOf(TesterNamespaceMapping testerTestMapping) {
@@ -51,7 +52,7 @@ public class NamespaceMappingTable extends ListTableWithButtons<TesterNamespaceM
             }
         };
 
-        ColumnInfo testNamespace = new ElementsColumnInfoBase<TesterNamespaceMapping>("Tests namespace") {
+        ColumnInfo testNamespace = new ElementsColumnInfoBase<TesterNamespaceMapping>(TesterBundle.message("settings.namespaceMappings.testsNamespace")) {
             @NotNull
             @Override
             public String valueOf(TesterNamespaceMapping testerTestMapping) {

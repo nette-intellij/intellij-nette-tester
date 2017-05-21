@@ -4,12 +4,13 @@ import com.intellij.codeInsight.template.Template;
 import com.intellij.codeInsight.template.TemplateManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import org.jetbrains.annotations.NotNull;
 
 public class TesterGenerateSetupMethodAction extends TesterAbstractGenerateMethodAction {
     public TesterGenerateSetupMethodAction() {
-        getTemplatePresentation().setText("TestCase setUp() method");
-        getTemplatePresentation().setDescription("Creates a Nette Tester setUp() method");
+        getTemplatePresentation().setText(TesterBundle.message("action.generateSetupMethod.name"));
+        getTemplatePresentation().setDescription(TesterBundle.message("action.generateSetupMethod.description"));
     }
 
     @Override

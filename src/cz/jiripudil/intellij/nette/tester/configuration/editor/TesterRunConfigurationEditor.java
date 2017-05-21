@@ -4,6 +4,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,15 +51,15 @@ public class TesterRunConfigurationEditor extends SettingsEditor<TesterRunConfig
 
     private void createUIComponents() {
         testerSettingsPanel = new JPanel();
-        testerSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Nette Tester"));
+        testerSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), TesterBundle.message("runConfiguration.editor.tester.title")));
         testerSettingsEditor = new TesterSettingsEditor(project);
 
         testEnvironmentSettingsPanel = new JPanel();
-        testEnvironmentSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Test Environment"));
+        testEnvironmentSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), TesterBundle.message("runConfiguration.editor.testEnv.title")));
         testEnvironmentSettingsEditor = new TesterTestEnvironmentSettingsEditor(project);
 
         cliSettingsPanel = new JPanel();
-        cliSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Command Line"));
+        cliSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), TesterBundle.message("runConfiguration.editor.cli.title")));
         phpCommandLineSettingsEditor = new PhpCommandLineSettingsEditor(project);
     }
 }

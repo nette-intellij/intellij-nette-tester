@@ -6,6 +6,8 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
+import com.intellij.ui.components.JBLabel;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterSettings;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +22,11 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
     private TextFieldWithBrowseButton testerExecutable;
     private RawCommandLineEditor testerOptions;
     private TextFieldWithBrowseButton userSetupScript;
+
+    private JBLabel testScopeLabel;
+    private JBLabel testerExecutableLabel;
+    private JBLabel testerOptionsLabel;
+    private JBLabel setupScriptLabel;
 
     TesterSettingsEditor(@NotNull final Project project) {
         this.project = project;
@@ -61,5 +68,10 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
 
         userSetupScript = new TextFieldWithBrowseButton();
         userSetupScript.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("php"));
+
+        testScopeLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.tester.testScope"));
+        testerExecutableLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.tester.testerExecutable"));
+        testerOptionsLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.tester.testerOptions"));
+        setupScriptLabel = new JBLabel(TesterBundle.message("runConfiguration.editor.tester.setupScript"));
     }
 }

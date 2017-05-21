@@ -4,8 +4,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.ui.ElementProducer;
 import com.jetbrains.php.util.ConfigurableForm;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterNamespaceMapping;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
@@ -21,6 +23,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
 
     private ComboBox<String> defaultExtensionCombobox;
     private JPanel namespaceMappingPanel;
+    private JBLabel defaultExtensionLabel;
 
     private NamespaceMappingTable namespaceMappingTable;
 
@@ -74,6 +77,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
     }
 
     private void createUIComponents() {
+        defaultExtensionLabel = new JBLabel(TesterBundle.message("settings.defaultExtension"));
         defaultExtensionCombobox = new ComboBox<>(new String[]{"phpt", "php"});
 
         namespaceMappingTable = new NamespaceMappingTable(project);
@@ -89,6 +93,6 @@ public class TesterConfigurableForm implements ConfigurableForm {
             }
         }).createPanel();
 
-        namespaceMappingPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), "Namespace Mapping"));
+        namespaceMappingPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.LIGHT_GRAY), TesterBundle.message("settings.namespaceMappings.title")));
     }
 }

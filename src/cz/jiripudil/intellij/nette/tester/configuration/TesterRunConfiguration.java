@@ -27,6 +27,7 @@ import com.jetbrains.php.run.PhpRefactoringListenerRunConfiguration;
 import com.jetbrains.php.run.PhpRunUtil;
 import com.jetbrains.php.util.PhpConfigurationUtil;
 import com.jetbrains.php.util.pathmapper.PhpPathMapper;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.configuration.editor.TesterRunConfigurationEditor;
 import cz.jiripudil.intellij.nette.tester.execution.TesterExecutionUtil;
 import cz.jiripudil.intellij.nette.tester.execution.TesterTestLocator;
@@ -58,40 +59,40 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
             throw new RuntimeConfigurationError(PhpCommandSettingsBuilder.INTERPRETER_NOT_FOUND_ERROR);
 
         } else if (interpreter.getPathToPhpExecutable() == null) {
-            throw new RuntimeConfigurationError("PHP executable not found.");
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpExecutableNotFound"));
 
         } else {
             TesterSettings settings = getSettings();
             VirtualFile scopeDirectory = PhpRunUtil.findDirectory(settings.getTestScope());
             VirtualFile scopeFile = PhpRunUtil.findFile(settings.getTestScope());
             if (StringUtil.isEmpty(settings.getTestScope())) {
-                throw new RuntimeConfigurationError("You must specify the test scope.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noTestScope"));
 
             } else if (scopeDirectory == null && scopeFile == null) {
-                throw new RuntimeConfigurationError("File or directory set as the test scope was not found.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testScopeNotFound"));
             }
 
             PhpInterpreter phpInterpreter = settings.getPhpInterpreter(getProject());
             if (phpInterpreter == null) {
-                throw new RuntimeConfigurationError("Test environment PHP interpreter not found.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testEnvInterpreterNotFound"));
 
             } else if (phpInterpreter.getPathToPhpExecutable() == null) {
-                throw new RuntimeConfigurationError("Test environment PHP executable not found.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testEnvExecutableNotFound"));
             }
 
             if (StringUtil.isEmpty(settings.getTesterExecutable())) {
-                throw new RuntimeConfigurationError("You must specify path to Tester executable.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noExecutable"));
 
             } else if (PhpRunUtil.findFile(settings.getTesterExecutable()) == null) {
-                throw new RuntimeConfigurationError("Tester executable was not found at given path.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.executableNotFound"));
             }
 
             if (!settings.getUseSystemPhpIni() && StringUtil.isNotEmpty(settings.getPhpIniPath()) && PhpRunUtil.findFile(settings.getPhpIniPath()) == null) {
-                throw new RuntimeConfigurationError("The php.ini file was not found at given path.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpIniNotFound"));
             }
 
             if (StringUtil.isNotEmpty(settings.getSetupScriptPath()) && PhpRunUtil.findFile(settings.getSetupScriptPath()) == null) {
-                throw new RuntimeConfigurationError("The setup script file was not found at given path.");
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.setupScriptNotFound"));
             }
 
             PhpRunUtil.checkCommandLineSettings(getProject(), settings.getPhpCommandLineSettings());

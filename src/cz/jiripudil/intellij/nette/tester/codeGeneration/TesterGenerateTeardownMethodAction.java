@@ -4,12 +4,13 @@ import com.intellij.codeInsight.template.Template;
 import com.intellij.codeInsight.template.TemplateManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import org.jetbrains.annotations.NotNull;
 
 public class TesterGenerateTeardownMethodAction extends TesterAbstractGenerateMethodAction {
     public TesterGenerateTeardownMethodAction() {
-        getTemplatePresentation().setText("TestCase tearDown() method");
-        getTemplatePresentation().setDescription("Creates a Nette Tester tearDown() method");
+        getTemplatePresentation().setText(TesterBundle.message("action.generateTeardownMethod.name"));
+        getTemplatePresentation().setDescription(TesterBundle.message("action.generateTeardownMethod.description"));
     }
 
     @Override
