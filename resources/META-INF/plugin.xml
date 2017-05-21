@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>1.0.0-alpha.4</version>
+  <version>2.0.0-beta.1</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
   <resource-bundle>messages.TesterBundle</resource-bundle>
 
@@ -13,6 +13,21 @@
   ]]></description>
 
   <change-notes><![CDATA[
+    <h2>2.0.0-beta.1</h2>
+    <p><strong>After tens of hours of work, here comes a total rework of the plugin.</strong> This beta.1 release marks the feature freeze, now I'd like to focus on fixing bugs and releasing a stable version soon.</p>
+    <ul>
+      <li>Most importantly, it no longer relies on a specific fork nette/tester. As of 2.0.0, the plugin <strong>supports all 1.* versions of Nette Tester.</strong> Hooray!</li>
+      <li>You can navigate between the class and its test, or create a test case for a class easily. The navigation is based on convention (class name + <code>Test</code> suffix), the creation assumes your tests reside in the same namespace as the code; if you use a different scheme, you can configure source to test namespace mapping in the project settings under PHP &gt; Nette Tester.</li>
+      <li>The plugin ships with a run configuration producer for directories, so you can right-click a directory and run the tests within it. For this to be truly one-click action, you should configure the Tester executable in the Nette Tester default run configuration template.</li>
+      <li>You can view the diff of comparison failures (<code>Assert::same()</code> and alike) right in the test results window.</li>
+      <li>Output stack traces are decorated with links to files, provided you set <code>Tester\Dumper::$maxPathSegments</code> to a high enough value in your test environment.</li>
+    </ul>
+    <p>To support a wide range of Tester versions, I had to drop a few features. However, they should, in some form or another, be back once <a href="https://github.com/nette/tester/pulls/345">OutputHandler</a> refactoring is resolved.</p>
+    <ul>
+      <li>The plugin no longer groups TestCase methods in the test results window.</li>
+      <li>The plugin no longer lets you navigate to the tests from the test results window, nor run or debug them directly.</li>
+    </ul>
+
     <h2>1.0.0-alpha.4</h2>
     <ul>
       <li>Fixed compatibility with PhpStorm 2016.3.</li>
