@@ -64,6 +64,14 @@
       <action id="TesterNewTestCase" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterNewTestCaseAction"/>
       <add-to-group group-id="NewGroup" anchor="last"/>
     </group>
+
+    <group id="TesterGenerateGroup">
+      <action id="TesterGenerateTestMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateTestMethodAction"/>
+      <action id="TesterGenerateSetupMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateSetupMethodAction"/>
+      <action id="TesterGenerateTeardownMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateTeardownMethodAction"/>
+      <separator/>
+      <add-to-group group-id="GenerateGroup" anchor="first"/>
+    </group>
   </actions>
 
   <application-components>
