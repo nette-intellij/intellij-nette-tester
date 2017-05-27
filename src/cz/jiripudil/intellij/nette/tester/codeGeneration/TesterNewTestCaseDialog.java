@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -29,6 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -146,6 +149,20 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
         String namespace = PhpLangUtil.getParentQualifiedName(fqn);
         if (!PhpLangUtil.isGlobalNamespaceName(namespace)) {
             properties.setProperty("TESTED_NAMESPACE", namespace);
+        }
+
+        // bootstrap
+        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(getProject()).getState();
+        if (settings != null && settings.getBootstrapFile() != null) {
+            VirtualFile bootstrapFile = LocalFileSystem.getInstance().findFileByPath(settings.getBootstrapFile());
+            if (bootstrapFile != null && getDirectory() != null) {
+                Path bootstrapFilePath = Paths.get(bootstrapFile.getPath());
+                VirtualFile testDirectory = getDirectory().getVirtualFile();
+                Path testDirectoryPath = Paths.get(testDirectory.getPath());
+
+                Path bootstrapRelativePath = testDirectoryPath.relativize(bootstrapFilePath);
+                properties.setProperty("BOOTSTRAP_RELATIVE_PATH", bootstrapRelativePath.toString());
+            }
         }
 
         return properties;

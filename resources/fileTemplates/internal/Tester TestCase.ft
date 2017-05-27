@@ -9,6 +9,11 @@ use Tester\Assert;
 use Tester\TestCase;
 
 
+#if (${BOOTSTRAP_RELATIVE_PATH})
+require_once __DIR__ . '/${BOOTSTRAP_RELATIVE_PATH}';
+
+
+#end
 /**
  * @testCase
  */

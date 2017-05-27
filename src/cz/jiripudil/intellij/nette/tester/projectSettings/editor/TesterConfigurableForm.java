@@ -1,7 +1,10 @@
 package cz.jiripudil.intellij.nette.tester.projectSettings.editor;
 
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
@@ -21,10 +24,12 @@ public class TesterConfigurableForm implements ConfigurableForm {
     private final Project project;
     private JPanel panel;
 
-    private ComboBox<String> defaultExtensionCombobox;
-    private JPanel namespaceMappingPanel;
     private JBLabel defaultExtensionLabel;
+    private ComboBox<String> defaultExtensionCombobox;
+    private JBLabel bootstrapFileLabel;
+    private TextFieldWithBrowseButton bootstrapFileField;
 
+    private JPanel namespaceMappingPanel;
     private NamespaceMappingTable namespaceMappingTable;
 
     public TesterConfigurableForm(@NotNull final Project project) {
@@ -40,7 +45,11 @@ public class TesterConfigurableForm implements ConfigurableForm {
     @Override
     public boolean isModified() {
         TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(project).getState();
-        return settings != null && !(settings.getDefaultExtension().equals(defaultExtensionCombobox.getSelectedItem()) && settings.getNamespaceMappings().equals(namespaceMappingTable.getTableView().getItems()));
+        return settings != null && !(
+            settings.getDefaultExtension().equals(defaultExtensionCombobox.getSelectedItem())
+            && StringUtil.notNullize(settings.getBootstrapFile()).equals(bootstrapFileField.getText())
+            && settings.getNamespaceMappings().equals(namespaceMappingTable.getTableView().getItems())
+        );
 
     }
 
@@ -52,6 +61,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
         }
 
         settings.setDefaultExtension((String) defaultExtensionCombobox.getSelectedItem());
+        settings.setBootstrapFile(bootstrapFileField.getText());
 
         // lists work with references which complicates detecting modification, cloning each item helps
         settings.setNamespaceMappings(cloneNamespaceMappings(namespaceMappingTable.getTableView().getItems()));
@@ -65,6 +75,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
         }
 
         defaultExtensionCombobox.setSelectedItem(settings.getDefaultExtension());
+        bootstrapFileField.setText(settings.getBootstrapFile());
 
         // lists work with references which complicates detecting modification, cloning each item helps
         namespaceMappingTable.getTableView().getTableViewModel().setItems(cloneNamespaceMappings(settings.getNamespaceMappings()));
@@ -79,6 +90,10 @@ public class TesterConfigurableForm implements ConfigurableForm {
     private void createUIComponents() {
         defaultExtensionLabel = new JBLabel(TesterBundle.message("settings.defaultExtension"));
         defaultExtensionCombobox = new ComboBox<>(new String[]{"phpt", "php"});
+
+        bootstrapFileLabel = new JBLabel(TesterBundle.message("settings.bootstrapFile"));
+        bootstrapFileField = new TextFieldWithBrowseButton();
+        bootstrapFileField.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("php"));
 
         namespaceMappingTable = new NamespaceMappingTable(project);
         namespaceMappingPanel = ToolbarDecorator.createDecorator(namespaceMappingTable.getTableView(), new ElementProducer<TesterNamespaceMapping>() {
