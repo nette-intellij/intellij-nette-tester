@@ -41,7 +41,12 @@ final class TeamCityOutputHandler implements OutputHandler
 
         } elseif ($result === Runner::FAILED) {
             $extraArguments = array();
-            if (\preg_match("/^diff '?(.*)'? '?(.*)'?$/m", $message, $matches)) {
+            if (\preg_match("/^diff \"(.*)\" \"(.*)\"$/m", $message, $matches)) { // Windows build
+                $expectedFile = \str_replace('""', '"', $matches[1]);
+                $actualFile = \str_replace('""', '"', $matches[2]);
+                $extraArguments = array('type' => 'comparisonFailure', 'expectedFile' => $expectedFile, 'actualFile' => $actualFile);
+
+            } elseif (\preg_match("/^diff '?(.*)'? '?(.*)'?$/m", $message, $matches)) {
                 $expectedFile = $matches[1];
                 $actualFile = $matches[2];
                 $extraArguments = array('type' => 'comparisonFailure', 'expectedFile' => $expectedFile, 'actualFile' => $actualFile);
