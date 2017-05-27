@@ -57,8 +57,10 @@
   <depends>com.jetbrains.php</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterConfigurationType"/>
+    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationType"/>
     <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
+    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationType"/>
+    <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationProducer"/>
     <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
 
     <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>

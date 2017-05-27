@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 
 public class TesterRunConfigurationProducer extends RunConfigurationProducer<TesterRunConfiguration> {
     protected TesterRunConfigurationProducer() {
-        super(TesterConfigurationType.getInstance());
+        super(TesterRunConfigurationType.getInstance());
     }
 
     @Override
@@ -21,6 +21,7 @@ public class TesterRunConfigurationProducer extends RunConfigurationProducer<Tes
         PsiDirectory directory = (PsiDirectory) location;
         runConfiguration.getSettings().setTestScope(directory.getVirtualFile().getPresentableUrl());
         runConfiguration.setGeneratedName(runConfiguration.suggestedName());
+        ref.set(directory);
         return true;
     }
 

@@ -1,8 +1,10 @@
 package cz.jiripudil.intellij.nette.tester;
 
 import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.php.PhpClassHierarchyUtils;
 import com.jetbrains.php.lang.PhpLangUtil;
+import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,5 +25,12 @@ public class TesterUtil {
         });
 
         return isTestCase.get();
+    }
+
+    public static boolean isTestMethod(@NotNull Method method) {
+        return method.getContainingClass() != null
+            && isTestClass(method.getContainingClass())
+            && StringUtil.startsWith(method.getName(), "test")
+            && method.getModifier().isPublic();
     }
 }
