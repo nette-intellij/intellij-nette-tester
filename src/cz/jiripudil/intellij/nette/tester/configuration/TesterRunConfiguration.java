@@ -56,7 +56,7 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     public void checkConfiguration() throws RuntimeConfigurationException {
         PhpInterpreter interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
         if (interpreter == null) {
-            throw new RuntimeConfigurationError(PhpCommandSettingsBuilder.INTERPRETER_NOT_FOUND_ERROR);
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpInterpreterNotSet"));
 
         } else if (interpreter.getPathToPhpExecutable() == null) {
             throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpExecutableNotFound"));
@@ -140,7 +140,7 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     private PhpCommandSettings createCommand(Map<String, String> envParameters, List<String> arguments, boolean withDebuggerOptions) throws ExecutionException {
         PhpInterpreter interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
         if (interpreter == null) {
-            throw new ExecutionException(PhpCommandSettingsBuilder.INTERPRETER_NOT_FOUND_ERROR);
+            throw new ExecutionException(TesterBundle.message("runConfiguration.errors.phpInterpreterNotSet"));
 
         } else {
             PhpCommandSettings command = PhpCommandSettingsBuilder.create(getProject(), interpreter, withDebuggerOptions);
