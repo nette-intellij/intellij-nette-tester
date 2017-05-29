@@ -65,10 +65,9 @@ final class TeamCityOutputHandler implements OutputHandler
             ), $extraArguments);
 
             \fwrite($this->file, $this->message('testFailed', $args));
-
-        } else {
-            \fwrite($this->file, $this->message('testFinished', array('name' => $testName, 'flowId' => $flowId)));
         }
+
+        \fwrite($this->file, $this->message('testFinished', array('name' => $testName, 'flowId' => $flowId)));
     }
 
 
