@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>2.0.0-beta.1</version>
+  <version>2.0.0-beta.2</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
   <resource-bundle>messages.TesterBundle</resource-bundle>
 
@@ -13,6 +13,15 @@
   ]]></description>
 
   <change-notes><![CDATA[
+    <h2>2.0.0-beta.2</h2>
+    <p>I know I said this release branch would be feature-frozen, but... well... not just yet. I'm far too excited about bringing the new features to be able to postpone them. Semver doesn't play well with the plugin's distribution channel anyway. Here they come:</p>
+    <ul>
+      <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/jiripudil/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
+      <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/9">#9</a>)</li>
+      <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/21">#21</a>)</li>
+      <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/22">#22</a>)</li>
+    </ul>
+
     <h2>2.0.0-beta.1</h2>
     <p><strong>After tens of hours of work, here comes a total rework of the plugin.</strong> This beta.1 release marks the feature freeze, now I'd like to focus on fixing bugs and releasing a stable version soon.</p>
     <ul>

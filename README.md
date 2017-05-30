@@ -52,6 +52,13 @@ If you create a test for a class, the dialog now follows your namespace mapping 
 
 ![Create a TestCase dialog](doc/create_test_dialog.png)
 
+In the project settings, you can also configure the path to your test environment bootstrap file, which is then automatically required in the generated TestCase files.
+
+
+### Running a single test method
+
+You can right-click a single test method to run or even debug it in isolation. This merely executes the file as a PHP script, with the method name as a single argument.
+
 
 ### Running tests from a directory
 
