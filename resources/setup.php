@@ -47,8 +47,8 @@ final class TeamCityOutputHandler implements OutputHandler
                 $extraArguments = array('type' => 'comparisonFailure', 'expectedFile' => $expectedFile, 'actualFile' => $actualFile);
 
             } elseif (\preg_match("/^diff '?(.*)'? '?(.*)'?$/m", $message, $matches)) {
-                $expectedFile = $matches[1];
-                $actualFile = $matches[2];
+                $expectedFile = \trim($matches[1], "'");
+                $actualFile = \trim($matches[2], "'");
                 $extraArguments = array('type' => 'comparisonFailure', 'expectedFile' => $expectedFile, 'actualFile' => $actualFile);
 
             } elseif (\preg_match("/Failed: (.*) should be( equal to)?\s+\.*\s*(.*) in/is", $message, $matches)) {
