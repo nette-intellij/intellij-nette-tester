@@ -157,8 +157,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
             VirtualFile bootstrapFile = LocalFileSystem.getInstance().findFileByPath(settings.getBootstrapFile());
             if (bootstrapFile != null && getDirectory() != null) {
                 Path bootstrapFilePath = Paths.get(bootstrapFile.getPath());
-                VirtualFile testDirectory = getDirectory().getVirtualFile();
-                Path testDirectoryPath = Paths.get(testDirectory.getPath());
+                Path testDirectoryPath = Paths.get(directoryComboBox.getSelectedPath());
 
                 Path bootstrapRelativePath = testDirectoryPath.relativize(bootstrapFilePath);
                 properties.setProperty("BOOTSTRAP_RELATIVE_PATH", bootstrapRelativePath.toString());
