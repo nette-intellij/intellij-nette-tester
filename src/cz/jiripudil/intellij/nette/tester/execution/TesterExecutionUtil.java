@@ -52,6 +52,7 @@ public class TesterExecutionUtil {
             Path setupScriptPath = Paths.get(tempDir.toString(), "setup.php");
             InputStream setupResourceStream = TesterExecutionUtil.class.getClassLoader().getResourceAsStream("setup.php");
             Files.copy(setupResourceStream, setupScriptPath, StandardCopyOption.REPLACE_EXISTING);
+            setupResourceStream.close();
 
             command.addArgument("--setup");
             command.addArgument(setupScriptPath.toString());
