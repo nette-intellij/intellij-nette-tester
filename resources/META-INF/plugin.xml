@@ -84,6 +84,9 @@
       parentId="reference.webide.settings.project.settings.php"
       groupWeight="25"
     />
+
+    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestFileNameInspection" groupName="Nette Tester" displayName="Test case files have correct names" enabledByDefault="true" level="ERROR"/>
+    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseAnnotationInspection" groupName="Nette Tester" displayName="Test case has @testCase annotation" enabledByDefault="true" level="WARNING"/>
   </extensions>
 
   <actions>
