@@ -36,10 +36,10 @@ final class TeamCityOutputHandler implements OutputHandler
         $flowId = \md5($testName);
         \fwrite($this->file, $this->message('testStarted', array('name' => $testName, 'flowId' => $flowId)));
 
-        if ($result === Runner::SKIPPED) {
+        if ($result === 2) { // Runner::SKIPPED, Test::SKIPPED
             \fwrite($this->file, $this->message('testIgnored', array('name' => $testName, 'flowId' => $flowId, 'message' => 'Test skipped', 'details' => $message)));
 
-        } elseif ($result === Runner::FAILED) {
+        } elseif ($result === 3) { // Runner::FAILED, Test::FAILED
             $extraArguments = array();
             if (\preg_match("/^diff \"(.*)\" \"(.*)\"$/m", $message, $matches)) { // Windows build
                 $expectedFile = \str_replace('""', '"', $matches[1]);
