@@ -38,6 +38,6 @@ public class TesterTestCreator implements TestCreator {
 
     @Override
     public void createTest(Project project, Editor editor, PsiFile psiFile) {
-        (new TesterNewTestCaseAction()).invoke(project, psiFile.getParent(), psiFile, null);
+        (new TesterNewTestCaseAction(false)).invoke(project, psiFile.getContainingDirectory(), psiFile, null);
     }
 }

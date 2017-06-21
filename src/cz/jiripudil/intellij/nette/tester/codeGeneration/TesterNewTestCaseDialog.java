@@ -55,7 +55,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
     private JBLabel fileNameLabel;
     private JBLabel directoryLabel;
 
-    TesterNewTestCaseDialog(@NotNull Project project, @Nullable PsiDirectory directory, @Nullable PsiFile file) {
+    TesterNewTestCaseDialog(@NotNull Project project, @Nullable PsiDirectory directory, @Nullable PsiFile file, boolean fixedDirectory) {
         super(project, directory);
         this.init(contentPane, nameTextField, namespaceComboBox, namespaceCompletionHint, fileNameTextField, directoryComboBox, directoryCompletionHint);
 
@@ -71,9 +71,11 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
                             TesterNewTestCaseDialog.this.nameTextField.setText(PhpLangUtil.toShortName(text) + "Test");
                             TesterNewTestCaseDialog.this.fileNameTextField.setText(PhpLangUtil.toShortName(text) + "Test");
 
-                            PhpClass phpClass = classes.iterator().next();
-                            String namespace = TesterNamespaceMapper.getInstance(project).mapSourceNamespaceToTestNamespace(phpClass);
-                            TesterNewTestCaseDialog.this.namespaceComboBox.getEditorTextField().setText(namespace);
+                            if (!fixedDirectory) {
+                                PhpClass phpClass = classes.iterator().next();
+                                String namespace = TesterNamespaceMapper.getInstance(project).mapSourceNamespaceToTestNamespace(phpClass);
+                                TesterNewTestCaseDialog.this.namespaceComboBox.getEditorTextField().setText(namespace);
+                            }
                         }
                     }
                 });
@@ -175,9 +177,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
             public void init(@NotNull VirtualFile baseDir, @NotNull String namespace) {
                 super.init(baseDir, namespace);
                 ProjectFileIndex index = ProjectRootManager.getInstance(TesterNewTestCaseDialog.this.getProject()).getFileIndex();
-                if (index.isInSourceContent(baseDir)) {
-                    this.setDirectoriesFilter(index::isInTestSourceContent);
-                }
+                this.setDirectoriesFilter(index::isInTestSourceContent);
 
                 this.updateDirectories(TesterNewTestCaseDialog.this.getNamespace());
             }
