@@ -87,6 +87,7 @@
 
     <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestFileNameInspection" groupName="Nette Tester" displayName="Test case files have correct names" enabledByDefault="true" level="ERROR"/>
     <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseAnnotationInspection" groupName="Nette Tester" displayName="Test case has @testCase annotation" enabledByDefault="true" level="WARNING"/>
+    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseIsRunInspection" groupName="Nette Tester" displayName="Test case is run" enabledByDefault="true" level="ERROR"/>
   </extensions>
 
   <actions>
