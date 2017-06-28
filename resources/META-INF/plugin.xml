@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>2.0.0-beta.2</version>
+  <version>2.0.0-beta.3</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
   <resource-bundle>messages.TesterBundle</resource-bundle>
 
@@ -13,6 +13,16 @@
   ]]></description>
 
   <change-notes><![CDATA[
+    <h2>2.0.0-beta.3</h2>
+    <ul>
+      <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/26">#26</a>)</li>
+      <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/jiripudil/intellij-nette-tester/issues/32">#32</a>)</li>
+      <li>You can right-click a single test case file to run it (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/23">#23</a>)</li>
+      <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/30">#30</a>)</li>
+      <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/25">#25</a>)</li>
+      <li>Fixed: comparison failure reporting was broken on Unix systems</li>
+    </ul>
+
     <h2>2.0.0-beta.2</h2>
     <p>I know I said this release branch would be feature-frozen, but... well... not just yet. I'm far too excited about bringing the new features to be able to postpone them. Semver doesn't play well with the plugin's distribution channel anyway. Here they come:</p>
     <ul>
