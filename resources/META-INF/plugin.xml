@@ -76,6 +76,7 @@
   <depends>com.jetbrains.php</depends>
 
   <extensions defaultExtensionNs="com.intellij">
+    <completion.contributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.completion.PhpDocCompletionContributor"/>
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationType"/>
     <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationType"/>
