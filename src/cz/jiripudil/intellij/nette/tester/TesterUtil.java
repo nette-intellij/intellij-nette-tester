@@ -4,6 +4,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.php.PhpClassHierarchyUtils;
 import com.jetbrains.php.lang.PhpLangUtil;
 import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment;
@@ -52,5 +53,10 @@ public class TesterUtil {
             }
         }
         return null;
+    }
+
+    public static boolean hasValidFileName(VirtualFile file) {
+        return "phpt".equals(file.getExtension())
+            || ("php".equals(file.getExtension()) && StringUtil.endsWith(file.getNameWithoutExtension(), "Test"));
     }
 }

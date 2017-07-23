@@ -30,17 +30,13 @@ public class TestFileNameInspection extends LocalInspectionTool {
             @Override
             public void visitPhpFile(PhpFile phpFile) {
                 PhpClass testClass = PhpPsiUtil.findClass(phpFile, TesterUtil::isTestClass);
-                if (testClass != null && ! hasValidName(phpFile.getVirtualFile())) {
+                if (testClass != null && ! TesterUtil.hasValidFileName(phpFile.getVirtualFile())) {
                     holder.registerProblem(phpFile, TesterBundle.message("inspections.fileName.description"), CHANGE_EXTENSION_TO_PHPT_QUICK_FIX, ADD_TEST_SUFFIX_QUICK_FIX);
                 }
             }
         };
     }
 
-    private boolean hasValidName(VirtualFile file) {
-        return "phpt".equals(file.getExtension())
-            || ("php".equals(file.getExtension()) && StringUtil.endsWith(file.getNameWithoutExtension(), "Test"));
-    }
 
     private static class ChangeExtensionToPhptQuickFix implements LocalQuickFix {
         @Nls
