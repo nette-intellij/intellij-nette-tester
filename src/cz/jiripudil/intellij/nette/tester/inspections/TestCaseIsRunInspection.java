@@ -12,6 +12,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory;
+import com.jetbrains.php.lang.psi.elements.ExtendsList;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.Statement;
@@ -73,7 +74,12 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
 
         testClasses.forEach((PhpClass testClass) -> {
             if ( ! runReferencedClassNames.contains(testClass.getFQN())) {
-                problemsHolder.registerProblem(testClass, TesterBundle.message("inspections.runTestCase.description"), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, ADD_RUN_METHOD_CALL_QUICK_FIX, !testClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null);
+                ExtendsList extendsList = testClass.getExtendsList();
+                TextRange highlightRange = new TextRange(0, extendsList.getStartOffsetInParent() + extendsList.getTextLength());
+                problemsHolder.registerProblem(
+                    testClass, TesterBundle.message("inspections.runTestCase.description"), ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                    highlightRange, ADD_RUN_METHOD_CALL_QUICK_FIX, ! testClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null
+                );
             }
         });
     }
