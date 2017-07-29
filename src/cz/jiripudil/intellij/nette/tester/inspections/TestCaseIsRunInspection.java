@@ -12,24 +12,24 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory;
-import com.jetbrains.php.lang.psi.PhpPsiUtil;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.Statement;
-import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor;
 import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.TesterUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TestCaseIsRunInspection extends LocalInspectionTool {
     private static final AddRunMethodCallQuickFix ADD_RUN_METHOD_CALL_QUICK_FIX = new AddRunMethodCallQuickFix();
     private static final MakeAbstractQuickFix MAKE_ABSTRACT_QUICK_FIX = new MakeAbstractQuickFix();
-    private Map<PhpType, Boolean> runMap;
+
+    private ArrayList<PhpClass> testClasses;
+    private HashSet<String> runReferencedClassNames;
 
     @NotNull
     @Override
@@ -38,7 +38,7 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
             @Override
             public void visitPhpClass(PhpClass phpClass) {
                 if (TesterUtil.isTestClass(phpClass)) {
-                    runMap.put(phpClass.getType(), Boolean.FALSE);
+                    testClasses.add(phpClass);
                 }
             }
 
@@ -48,9 +48,8 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
                     return;
                 }
 
-                PhpType classType = reference.getClassReference().getType();
-                if (runMap.containsKey(classType)) {
-                    runMap.put(classType, Boolean.TRUE);
+                if (reference.getCanonicalText().equalsIgnoreCase("run") || reference.getCanonicalText().equalsIgnoreCase("runTest")) {
+                    runReferencedClassNames.add(reference.getClassReference().getType().toString());
                 }
             }
         };
@@ -62,7 +61,8 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
             return;
         }
 
-        runMap = new HashMap<>();
+        testClasses = new ArrayList<>();
+        runReferencedClassNames = new HashSet<>();
     }
 
     @Override
@@ -71,12 +71,9 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
             return;
         }
 
-        runMap.forEach((PhpType type, Boolean isRun) -> {
-            if ( ! isRun) {
-                PhpClass phpClass = PhpPsiUtil.findClass((PhpFile) session.getFile(), (PhpClass foundClass) -> foundClass.getType().equals(type));
-                if (phpClass != null && TesterUtil.isTestClass(phpClass)) {
-                    problemsHolder.registerProblem(phpClass, TesterBundle.message("inspections.runTestCase.description"), ADD_RUN_METHOD_CALL_QUICK_FIX, ! phpClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null);
-                }
+        testClasses.forEach((PhpClass testClass) -> {
+            if ( ! runReferencedClassNames.contains(testClass.getFQN())) {
+                problemsHolder.registerProblem(testClass, TesterBundle.message("inspections.runTestCase.description"), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, ADD_RUN_METHOD_CALL_QUICK_FIX, !testClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null);
             }
         });
     }
