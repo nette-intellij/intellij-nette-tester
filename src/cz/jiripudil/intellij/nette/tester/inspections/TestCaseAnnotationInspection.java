@@ -32,7 +32,7 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
                     return;
                 }
 
-                PhpDocComment docComment = phpClass.getDocComment();
+                PhpDocComment docComment = TesterUtil.findDocCommentRedByTester(phpClass.getContainingFile());
                 if (docComment == null || docComment.getTagElementsByName("@testCase").length == 0) {
                     holder.registerProblem(phpClass, TesterBundle.message("inspections.annotation.description"), QUICK_FIX);
                 }
@@ -67,7 +67,7 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
             PsiElement testCaseTag = PhpPsiElementFactory.createFromText(project, PhpDocTag.class, template);
             assert testCaseTag != null;
 
-            PhpDocComment docComment = phpClass.getDocComment();
+            PhpDocComment docComment = TesterUtil.findDocCommentRedByTester(phpClass.getContainingFile());
             if (docComment == null) {
                 PsiElement testCaseDocComment = PhpPsiElementFactory.createFromText(project, PhpDocComment.class, template);
                 assert testCaseDocComment != null;
