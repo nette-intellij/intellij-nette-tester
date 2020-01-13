@@ -54,49 +54,49 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
 
     @Override
     public void checkConfiguration() throws RuntimeConfigurationException {
-        PhpInterpreter interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
+        TesterSettings settings = getSettings();
+        PhpInterpreter interpreter = settings.getPhpInterpreter(getProject());
         if (interpreter == null) {
-            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpInterpreterNotSet"));
+            interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
+            if (interpreter == null) {
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpInterpreterNotSet"));
 
-        } else if (interpreter.getPathToPhpExecutable() == null) {
-            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpExecutableNotFound"));
-
-        } else {
-            TesterSettings settings = getSettings();
-            VirtualFile scopeDirectory = PhpRunUtil.findDirectory(settings.getTestScope());
-            VirtualFile scopeFile = PhpRunUtil.findFile(settings.getTestScope());
-            if (StringUtil.isEmpty(settings.getTestScope())) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noTestScope"));
-
-            } else if (scopeDirectory == null && scopeFile == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testScopeNotFound"));
+            } else if (interpreter.getPathToPhpExecutable() == null) {
+                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpExecutableNotFound"));
             }
-
-            PhpInterpreter phpInterpreter = settings.getPhpInterpreter(getProject());
-            if (phpInterpreter == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testEnvInterpreterNotFound"));
-
-            } else if (phpInterpreter.getPathToPhpExecutable() == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testEnvExecutableNotFound"));
-            }
-
-            if (StringUtil.isEmpty(settings.getTesterExecutable())) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noExecutable"));
-
-            } else if (PhpRunUtil.findFile(settings.getTesterExecutable()) == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.executableNotFound"));
-            }
-
-            if (!settings.getUseSystemPhpIni() && StringUtil.isNotEmpty(settings.getPhpIniPath()) && PhpRunUtil.findFile(settings.getPhpIniPath()) == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpIniNotFound"));
-            }
-
-            if (StringUtil.isNotEmpty(settings.getSetupScriptPath()) && PhpRunUtil.findFile(settings.getSetupScriptPath()) == null) {
-                throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.setupScriptNotFound"));
-            }
-
-            PhpRunUtil.checkCommandLineSettings(getProject(), settings.getPhpCommandLineSettings());
         }
+
+        //TesterSettings settings = getSettings();
+        VirtualFile scopeDirectory = PhpRunUtil.findDirectory(settings.getTestScope());
+        VirtualFile scopeFile = PhpRunUtil.findFile(settings.getTestScope());
+        if (StringUtil.isEmpty(settings.getTestScope())) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noTestScope"));
+
+        } else if (scopeDirectory == null && scopeFile == null) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testScopeNotFound"));
+        }
+
+        //PhpInterpreter phpInterpreter = settings.getPhpInterpreter(getProject());
+        if (interpreter.getPathToPhpExecutable() == null) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.testEnvExecutableNotFound"));
+        }
+
+        if (StringUtil.isEmpty(settings.getTesterExecutable())) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.noExecutable"));
+
+        } else if (PhpRunUtil.findFile(settings.getTesterExecutable()) == null) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.executableNotFound"));
+        }
+
+        if (!settings.getUseSystemPhpIni() && StringUtil.isNotEmpty(settings.getPhpIniPath()) && PhpRunUtil.findFile(settings.getPhpIniPath()) == null) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.phpIniNotFound"));
+        }
+
+        if (StringUtil.isNotEmpty(settings.getSetupScriptPath()) && PhpRunUtil.findFile(settings.getSetupScriptPath()) == null) {
+            throw new RuntimeConfigurationError(TesterBundle.message("runConfiguration.errors.setupScriptNotFound"));
+        }
+
+        PhpRunUtil.checkCommandLineSettings(getProject(), settings.getPhpCommandLineSettings());
     }
 
     @Nullable
@@ -192,7 +192,7 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     }
 
     @Override
-    public void writeExternal(Element element) throws WriteExternalException {
+    public void writeExternal(@NotNull Element element) throws WriteExternalException {
         if (!isNewSerializationUsed() && isGeneratedName()) {
             element.setAttribute("isGeneratedName", "true");
         }

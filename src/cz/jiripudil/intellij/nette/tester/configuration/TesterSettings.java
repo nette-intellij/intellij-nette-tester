@@ -130,7 +130,7 @@ public class TesterSettings implements PhpRunConfigurationSettings, Cloneable {
     }
 
     @Override
-    public void setWorkingDirectory(@NotNull String workingDirectory) {
+    public void setWorkingDirectory(@Nullable String workingDirectory) {
         phpCommandLineSettings.setWorkingDirectory(workingDirectory);
     }
 

@@ -79,7 +79,7 @@ public class TesterTestFinder implements TestFinder {
     public boolean isTest(@NotNull PsiElement psiElement) {
         PsiFile containingFile = psiElement.getContainingFile();
         return containingFile instanceof PhpPsiElement && (
-            (containingFile.getVirtualFile().getExtension() != null && containingFile.getVirtualFile().getExtension().equals("phpt"))
+            (containingFile.getVirtualFile() != null && containingFile.getVirtualFile().getExtension() != null && containingFile.getVirtualFile().getExtension().equals("phpt"))
             || StringUtil.endsWith(containingFile.getName(), "Test")
         );
     }
