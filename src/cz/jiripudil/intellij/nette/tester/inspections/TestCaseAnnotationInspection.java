@@ -33,8 +33,8 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
                 }
 
                 PhpDocComment docComment = phpClass.getDocComment();
-                if (docComment == null || docComment.getTagElementsByName("@testCase").length == 0) {
-                    holder.registerProblem(phpClass, TesterBundle.message("inspections.annotation.description"), QUICK_FIX);
+                if (phpClass.getIdentifyingElement() != null && (docComment == null || docComment.getTagElementsByName("@testCase").length == 0)) {
+                    holder.registerProblem(phpClass.getIdentifyingElement(), TesterBundle.message("inspections.annotation.description"), QUICK_FIX);
                 }
             }
         };
