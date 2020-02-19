@@ -19,9 +19,11 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.annotations.Attribute;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
+import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
+import com.jetbrains.php.run.PhpCommandLineSettings;
 import com.jetbrains.php.run.PhpExecutionUtil;
 import com.jetbrains.php.run.PhpRefactoringListenerRunConfiguration;
 import com.jetbrains.php.run.PhpRunUtil;
@@ -102,7 +104,11 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     @Nullable
     @Override
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
-        return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), false));
+        try {
+            return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), false));
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @NotNull
@@ -137,24 +143,30 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     }
 
     @NotNull
-    private PhpCommandSettings createCommand(Map<String, String> envParameters, List<String> arguments, boolean withDebuggerOptions) throws ExecutionException {
+    private PhpCommandSettings createCommand(Map<String, String> envParameters, List<String> arguments, boolean withDebuggerOptions) throws ExecutionException, CloneNotSupportedException {
         PhpInterpreter interpreter = PhpProjectConfigurationFacade.getInstance(getProject()).getInterpreter();
         if (interpreter == null) {
             throw new ExecutionException(TesterBundle.message("runConfiguration.errors.phpInterpreterNotSet"));
 
         } else {
-            PhpCommandSettings command = PhpCommandSettingsBuilder.create(getProject(), interpreter, withDebuggerOptions);
-            command.setScript(getSettings().getTesterExecutable(), false);
+            TesterSettings settings = getSettings().clone();
 
-            command.importCommandLineSettings(getSettings().getPhpCommandLineSettings(), null);
+            PhpCommandSettings command = PhpCommandSettingsBuilder.create(getProject(), interpreter, withDebuggerOptions);
+
+            processSettings(command.getPathProcessor(), settings);
+
+            command.setScript(settings.getTesterExecutable());
+
+            PhpCommandLineSettings commandLineSettings = settings.getPhpCommandLineSettings();
+            command.importCommandLineSettings(commandLineSettings, null);
             command.addEnvs(envParameters);
 
             // support for user setup
-            if (getSettings().getSetupScriptPath() != null) {
-                command.addEnv("INTELLIJ_NETTE_TESTER_USER_SETUP", getSettings().getSetupScriptPath());
+            if (settings.getSetupScriptPath() != null) {
+                command.addEnv("INTELLIJ_NETTE_TESTER_USER_SETUP", command.getPathProcessor().process(settings.getSetupScriptPath()));
             }
 
-            TesterExecutionUtil.addCommandArguments(getProject(), command, getSettings(), arguments);
+            TesterExecutionUtil.addCommandArguments(getProject(), command, settings, arguments);
 
             return command;
         }
@@ -164,6 +176,12 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     @Override
     protected TesterSettings createSettings() {
         return new TesterSettings();
+    }
+
+    protected void processSettings(@NotNull PhpCommandLinePathProcessor processor, @NotNull TesterSettings settings) {
+        settings.setTestScope(processor.process(settings.getTestScope()));
+        settings.setPhpIniPath(processor.process(StringUtil.notNullize(settings.getPhpIniPath())));
+        settings.setSetupScriptPath(processor.process(StringUtil.notNullize(settings.getSetupScriptPath())));
     }
 
     @Override

@@ -20,6 +20,8 @@ import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationType;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationType;
+import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
+import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +48,10 @@ public class TesterUtil {
         });
 
         return isTestCase.get();
+    }
+
+    public static TesterProjectSettings getTesterSettings(@NotNull Project project) {
+        return TesterProjectSettingsManager.getInstance(project).getState();
     }
 
     public static boolean isTestMethod(@NotNull Method method) {

@@ -14,7 +14,7 @@ public class TesterMethodRunTestAction extends TesterCreateMethodRunTestAction {
     public TesterMethodRunTestAction(@NotNull PsiElement element, @NotNull String testName, @NotNull String testMethod) {
         super(element, testName, testMethod);
 
-        getTemplatePresentation().setText(TesterBundle.message("action.runTestAction.name") + " '" + testMethod + "()'");getTemplatePresentation().setIcon(TesterIcons.TESTER_CONFIG);
+        getTemplatePresentation().setText(TesterBundle.message("action.runTestAction.name") + " '" + testMethod + "()'");
         getTemplatePresentation().setIcon(TesterIcons.RUN);
     }
 

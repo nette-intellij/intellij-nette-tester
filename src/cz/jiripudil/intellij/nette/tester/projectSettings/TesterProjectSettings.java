@@ -12,9 +12,9 @@ import java.util.List;
 @Tag("testerSettings")
 public class TesterProjectSettings {
     @NotNull private String defaultExtension = "phpt";
+    @NotNull private String testerVersion = "< 2.0";
     @Nullable private String bootstrapFile;
     @NotNull private List<TesterNamespaceMapping> namespaceMappings = new ArrayList<>();
-
 
     @Attribute("defaultExtension")
     @NotNull
@@ -22,10 +22,23 @@ public class TesterProjectSettings {
         return defaultExtension;
     }
 
+    @Attribute("testerVersion")
+    @NotNull
+    public String getTesterVersion() {
+        return testerVersion;
+    }
+
+    public String getSetupFile() {
+        return testerVersion.equals("< 2.0") ? "setup.php" : "setup2-0.php";
+    }
+
+    public void setTesterVersion(@NotNull String defaultExtension) {
+        this.testerVersion = defaultExtension;
+    }
+
     public void setDefaultExtension(@NotNull String defaultExtension) {
         this.defaultExtension = defaultExtension;
     }
-
 
     @Attribute("bootstrapFile")
     @Nullable
@@ -36,7 +49,6 @@ public class TesterProjectSettings {
     public void setBootstrapFile(@Nullable String bootstrapFile) {
         this.bootstrapFile = PhpConfigurationUtil.serializePath(bootstrapFile);
     }
-
 
     @Tag("namespaceMappings")
     @NotNull
