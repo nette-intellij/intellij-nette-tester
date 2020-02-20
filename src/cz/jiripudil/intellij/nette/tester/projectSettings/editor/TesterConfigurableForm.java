@@ -63,8 +63,8 @@ public class TesterConfigurableForm implements ConfigurableForm {
             return;
         }
 
-        settings.setDefaultExtension((String) defaultExtensionCombobox.getSelectedItem());
-        settings.setTesterVersion((String) testerVersionCombobox.getSelectedItem());
+        settings.setDefaultExtension(StringUtil.notNullize((String) defaultExtensionCombobox.getSelectedItem()));
+        settings.setTesterVersion(StringUtil.notNullize((String) testerVersionCombobox.getSelectedItem()));
         settings.setBootstrapFile(bootstrapFileField.getText());
 
         // lists work with references which complicates detecting modification, cloning each item helps
@@ -79,7 +79,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
         }
 
         defaultExtensionCombobox.setSelectedItem(settings.getDefaultExtension());
-        testerVersionCombobox.setSelectedItem(settings.getTesterVersion());
+        testerVersionCombobox.setSelectedItem(settings.getTesterVersion().equals("> 2.0") ? ">= 2.0" : settings.getTesterVersion());
         bootstrapFileField.setText(settings.getBootstrapFile());
 
         // lists work with references which complicates detecting modification, cloning each item helps
@@ -97,7 +97,7 @@ public class TesterConfigurableForm implements ConfigurableForm {
         defaultExtensionCombobox = new ComboBox<>(new String[]{"phpt", "php"});
 
         testerVersionLabel = new JBLabel(TesterBundle.message("settings.testerVersion"));
-        testerVersionCombobox = new ComboBox<>(new String[]{"< 2.0", "> 2.0"});
+        testerVersionCombobox = new ComboBox<>(new String[]{"< 2.0", ">= 2.0"});
 
         bootstrapFileLabel = new JBLabel(TesterBundle.message("settings.bootstrapFile"));
         bootstrapFileField = new TextFieldWithBrowseButton();

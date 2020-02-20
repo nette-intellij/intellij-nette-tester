@@ -6,7 +6,7 @@
   <resource-bundle>messages.TesterBundle</resource-bundle>
 
   <description><![CDATA[
-    <a href="https://github.com/jiripudil/intellij-nette-tester">Github</a>
+    <a href="https://github.com/nette-intellij/intellij-nette-tester">Github</a>
 
     <p>This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
     into PhpStorm IDE.</p>
@@ -18,27 +18,27 @@
       <li>Added run line markers to run TestCase or test methods</li>
       <li>Added support for run configuration in Docker</li>
       <li>Added support for Nette Tester 2.0</li>
-      <li>Fixed Compatibility with PHPStorm 2019.2 (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/43">#43</a>)</li>
-      <li>Fixed bug java.lang.NullPointerException on phpstorm startup (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/45">#45</a>)</li>
+      <li>Fixed Compatibility with PHPStorm 2019.2 (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/43">#43</a>)</li>
+      <li>Fixed bug java.lang.NullPointerException on phpstorm startup (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/45">#45</a>)</li>
     </ul>
 
     <h2>2.0.0-beta.3</h2>
     <ul>
-      <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/26">#26</a>)</li>
-      <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/jiripudil/intellij-nette-tester/issues/32">#32</a>)</li>
-      <li>You can right-click a single test case file to run it (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/23">#23</a>)</li>
-      <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/30">#30</a>)</li>
-      <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/25">#25</a>)</li>
+      <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/26">#26</a>)</li>
+      <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/32">#32</a>)</li>
+      <li>You can right-click a single test case file to run it (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/23">#23</a>)</li>
+      <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/30">#30</a>)</li>
+      <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/25">#25</a>)</li>
       <li>Fixed: comparison failure reporting was broken on Unix systems</li>
     </ul>
 
     <h2>2.0.0-beta.2</h2>
     <p>I know I said this release branch would be feature-frozen, but... well... not just yet. I'm far too excited about bringing the new features to be able to postpone them. Semver doesn't play well with the plugin's distribution channel anyway. Here they come:</p>
     <ul>
-      <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/jiripudil/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
-      <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/9">#9</a>)</li>
-      <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/21">#21</a>)</li>
-      <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/22">#22</a>)</li>
+      <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
+      <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/9">#9</a>)</li>
+      <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/21">#21</a>)</li>
+      <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/22">#22</a>)</li>
     </ul>
 
     <h2>2.0.0-beta.1</h2>

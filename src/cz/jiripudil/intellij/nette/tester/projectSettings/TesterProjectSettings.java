@@ -12,7 +12,7 @@ import java.util.List;
 @Tag("testerSettings")
 public class TesterProjectSettings {
     @NotNull private String defaultExtension = "phpt";
-    @NotNull private String testerVersion = "< 2.0";
+    @NotNull private String testerVersion = ">= 2.0";
     @Nullable private String bootstrapFile;
     @NotNull private List<TesterNamespaceMapping> namespaceMappings = new ArrayList<>();
 
