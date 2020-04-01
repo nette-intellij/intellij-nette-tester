@@ -11,9 +11,9 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.util.ui.ElementProducer;
 import com.jetbrains.php.util.ConfigurableForm;
 import cz.jiripudil.intellij.nette.tester.TesterBundle;
+import cz.jiripudil.intellij.nette.tester.TesterUtil;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterNamespaceMapping;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
-import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -30,6 +30,8 @@ public class TesterConfigurableForm implements ConfigurableForm {
     private TextFieldWithBrowseButton bootstrapFileField;
 
     private JPanel namespaceMappingPanel;
+    private ComboBox<String> testerVersionCombobox;
+    private JBLabel testerVersionLabel;
     private NamespaceMappingTable namespaceMappingTable;
 
     public TesterConfigurableForm(@NotNull final Project project) {
@@ -44,9 +46,10 @@ public class TesterConfigurableForm implements ConfigurableForm {
 
     @Override
     public boolean isModified() {
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(project).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(project);
         return settings != null && !(
             settings.getDefaultExtension().equals(defaultExtensionCombobox.getSelectedItem())
+            && settings.getTesterVersion().equals(testerVersionCombobox.getSelectedItem())
             && StringUtil.notNullize(settings.getBootstrapFile()).equals(bootstrapFileField.getText())
             && settings.getNamespaceMappings().equals(namespaceMappingTable.getTableView().getItems())
         );
@@ -55,12 +58,13 @@ public class TesterConfigurableForm implements ConfigurableForm {
 
     @Override
     public void apply() {
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(project).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(project);
         if (settings == null) {
             return;
         }
 
-        settings.setDefaultExtension((String) defaultExtensionCombobox.getSelectedItem());
+        settings.setDefaultExtension(StringUtil.notNullize((String) defaultExtensionCombobox.getSelectedItem()));
+        settings.setTesterVersion(StringUtil.notNullize((String) testerVersionCombobox.getSelectedItem()));
         settings.setBootstrapFile(bootstrapFileField.getText());
 
         // lists work with references which complicates detecting modification, cloning each item helps
@@ -69,12 +73,13 @@ public class TesterConfigurableForm implements ConfigurableForm {
 
     @Override
     public void reset() {
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(project).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(project);
         if (settings == null) {
             return;
         }
 
         defaultExtensionCombobox.setSelectedItem(settings.getDefaultExtension());
+        testerVersionCombobox.setSelectedItem(settings.getTesterVersion().equals("> 2.0") ? ">= 2.0" : settings.getTesterVersion());
         bootstrapFileField.setText(settings.getBootstrapFile());
 
         // lists work with references which complicates detecting modification, cloning each item helps
@@ -90,6 +95,9 @@ public class TesterConfigurableForm implements ConfigurableForm {
     private void createUIComponents() {
         defaultExtensionLabel = new JBLabel(TesterBundle.message("settings.defaultExtension"));
         defaultExtensionCombobox = new ComboBox<>(new String[]{"phpt", "php"});
+
+        testerVersionLabel = new JBLabel(TesterBundle.message("settings.testerVersion"));
+        testerVersionCombobox = new ComboBox<>(new String[]{"< 2.0", ">= 2.0"});
 
         bootstrapFileLabel = new JBLabel(TesterBundle.message("settings.bootstrapFile"));
         bootstrapFileField = new TextFieldWithBrowseButton();

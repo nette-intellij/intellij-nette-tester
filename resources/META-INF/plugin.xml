@@ -1,35 +1,44 @@
 <idea-plugin>
   <id>cz.jiripudil.intellij.nette.tester</id>
   <name>Nette Tester</name>
-  <version>2.0.0-beta.3</version>
+  <version>2.1.0</version>
   <vendor email="me@jiripudil.cz" url="https://jiripudil.cz">Jiří Pudil</vendor>
   <resource-bundle>messages.TesterBundle</resource-bundle>
 
   <description><![CDATA[
-    <a href="https://github.com/jiripudil/intellij-nette-tester">Github</a>
+    <a href="https://github.com/nette-intellij/intellij-nette-tester">Github</a>
 
     <p>This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
     into PhpStorm IDE.</p>
   ]]></description>
 
   <change-notes><![CDATA[
+    <h2>2.1.0</h2>
+    <ul>
+      <li>Added run line markers to run TestCase or test methods</li>
+      <li>Added support for run configuration in Docker</li>
+      <li>Added support for Nette Tester 2.0</li>
+      <li>Fixed Compatibility with PHPStorm 2019.2 (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/43">#43</a>)</li>
+      <li>Fixed bug java.lang.NullPointerException on phpstorm startup (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/45">#45</a>)</li>
+    </ul>
+
     <h2>2.0.0-beta.3</h2>
     <ul>
-      <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/26">#26</a>)</li>
-      <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/jiripudil/intellij-nette-tester/issues/32">#32</a>)</li>
-      <li>You can right-click a single test case file to run it (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/23">#23</a>)</li>
-      <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/30">#30</a>)</li>
-      <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/25">#25</a>)</li>
+      <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/26">#26</a>)</li>
+      <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/32">#32</a>)</li>
+      <li>You can right-click a single test case file to run it (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/23">#23</a>)</li>
+      <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/30">#30</a>)</li>
+      <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/25">#25</a>)</li>
       <li>Fixed: comparison failure reporting was broken on Unix systems</li>
     </ul>
 
     <h2>2.0.0-beta.2</h2>
     <p>I know I said this release branch would be feature-frozen, but... well... not just yet. I'm far too excited about bringing the new features to be able to postpone them. Semver doesn't play well with the plugin's distribution channel anyway. Here they come:</p>
     <ul>
-      <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/jiripudil/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
-      <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/9">#9</a>)</li>
-      <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/21">#21</a>)</li>
-      <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/jiripudil/intellij-nette-tester/issues/22">#22</a>)</li>
+      <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
+      <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/9">#9</a>)</li>
+      <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/21">#21</a>)</li>
+      <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/22">#22</a>)</li>
     </ul>
 
     <h2>2.0.0-beta.1</h2>
@@ -70,7 +79,7 @@
     </ul>
   ]]></change-notes>
 
-  <idea-version since-build="141.0"/>
+  <idea-version since-build="183.2153.8"/>
 
   <depends>com.intellij.modules.lang</depends>
   <depends>com.jetbrains.php</depends>
@@ -78,13 +87,19 @@
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationType"/>
     <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
+
     <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationType"/>
     <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationProducer"/>
+
     <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
+
+    <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterRunLineMarkerProvider"/>
+    <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterMethodRunLineMarkerProvider"/>
 
     <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>
     <testCreator language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterTestCreator"/>
     <internalFileTemplate name="Tester TestCase"/>
+    <backgroundPostStartupActivity implementation="cz.jiripudil.intellij.nette.tester.TesterPostStartupActivity"/>
 
     <projectService serviceImplementation="cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager"/>
     <projectConfigurable
@@ -93,11 +108,27 @@
       id="cz.jiripudil.intellij.nette.tester.projectSettings.TesterConfigurable"
       parentId="reference.webide.settings.project.settings.php"
       groupWeight="25"
+      nonDefaultProject="true"
     />
 
-    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestFileNameInspection" groupName="Nette Tester" displayName="Test case files have correct names" enabledByDefault="true" level="ERROR"/>
-    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseAnnotationInspection" groupName="Nette Tester" displayName="Test case has @testCase annotation" enabledByDefault="true" level="WARNING"/>
-    <localInspection implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseIsRunInspection" groupName="Nette Tester" displayName="Test case is run" enabledByDefault="true" level="ERROR"/>
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestFileNameInspection"
+            groupName="Nette tester"
+            displayName="Test case files have correct names"
+            enabledByDefault="true"
+            level="ERROR"/>
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseAnnotationInspection"
+            groupName="Nette tester"
+            displayName="Test case has @testCase annotation"
+            enabledByDefault="true"
+            level="WARNING"/>
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseIsRunInspection"
+            groupName="Nette tester"
+            displayName="Test case is run"
+            enabledByDefault="true"
+            level="ERROR"/>
   </extensions>
 
   <actions>
@@ -114,10 +145,4 @@
       <add-to-group group-id="GenerateGroup" anchor="first"/>
     </group>
   </actions>
-
-  <application-components>
-    <component>
-      <implementation-class>cz.jiripudil.intellij.nette.tester.TesterTestCreatorEnabler</implementation-class>
-    </component>
-  </application-components>
 </idea-plugin>

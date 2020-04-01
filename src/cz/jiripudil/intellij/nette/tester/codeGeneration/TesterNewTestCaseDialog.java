@@ -24,8 +24,8 @@ import com.jetbrains.php.roots.ui.PhpNamespaceComboBox;
 import com.jetbrains.php.roots.ui.PhpPsrDirectoryComboBox;
 import com.jetbrains.php.ui.PhpUiUtil;
 import cz.jiripudil.intellij.nette.tester.TesterBundle;
+import cz.jiripudil.intellij.nette.tester.TesterUtil;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
-import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -133,7 +133,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
     @NotNull
     @Override
     protected String getExtension() {
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(getProject()).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(getProject());
         return settings != null ? settings.getDefaultExtension() : "phpt";
     }
 
@@ -154,7 +154,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
         }
 
         // bootstrap
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(getProject()).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(getProject());
         if (settings != null && settings.getBootstrapFile() != null) {
             VirtualFile bootstrapFile = LocalFileSystem.getInstance().findFileByPath(settings.getBootstrapFile());
             if (bootstrapFile != null && getDirectory() != null) {

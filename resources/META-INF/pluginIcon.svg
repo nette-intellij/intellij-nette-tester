@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80.433mm" height="80.433mm" clip-rule="evenodd" fill-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" version="1.1" viewBox="0 0 4062.7 4062.7" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:#5A8F09}
+    .fil0 {fill:#71B30B}
+    .fil2 {fill:url(#id1)}
+   ]]>
+  </style>
+    
+  <linearGradient id="id1" x1="1950.8" x2="1964.2" y1="3122.6" y2="880.12" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#BCBCBC" offset="0"/>
+   <stop stop-color="#ddd" offset=".43922"/>
+   <stop stop-color="#FEFEFE" offset="1"/>
+  </linearGradient>
+ <filter id="filter3971" color-interpolation-filters="sRGB"><feFlood flood-color="rgb(0,0,0)" flood-opacity=".38039" result="flood"/><feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/><feGaussianBlur in="composite1" result="blur" stdDeviation="49.5"/><feOffset dx="6" dy="6" result="offset"/><feComposite in="SourceGraphic" in2="offset" result="composite2"/></filter></defs>
+ 
+  
+  <polygon class="fil0" points="4062.7 0 -0 0 -0 4062.7 4062.7 4062.7"/>
+  <polygon class="fil1" points="2590.3 2064.6 2590.3 3260.8 1472.6 3260.8 1472.6 2064.6 497.11 2064.6 497.11 801.84 3565.6 801.84 3565.6 2064.6"/>
+  
+  <path class="fil2" d="m2590.3 2064.6v1196.2h-1117.7v-1196.2h-975.47v-1262.8h3068.4v1262.8h-975.25zm-1910.3-1079.9v896.98h975.47v1196.2h751.93l-0.22-1196.2h0.22 975.25v-896.98h-2702.6z" filter="url(#filter3971)"/>
+ 
+</svg>

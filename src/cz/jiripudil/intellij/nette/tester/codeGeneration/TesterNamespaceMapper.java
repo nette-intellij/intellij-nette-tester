@@ -3,9 +3,9 @@ package cz.jiripudil.intellij.nette.tester.codeGeneration;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import cz.jiripudil.intellij.nette.tester.TesterUtil;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterNamespaceMapping;
 import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettings;
-import cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class TesterNamespaceMapper {
 
     @NotNull
     String mapSourceNamespaceToTestNamespace(@NotNull PhpClass sourceClass) {
-        TesterProjectSettings settings = TesterProjectSettingsManager.getInstance(project).getState();
+        TesterProjectSettings settings = TesterUtil.getTesterSettings(project);
         String namespaceName = trimNamespaceSeparators(sourceClass.getNamespaceName());
         if (settings == null) {
             return namespaceName;

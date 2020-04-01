@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public class TesterTestMethodRunConfiguration extends PhpScriptRunConfiguration {
-    TesterTestMethodRunConfiguration(Project project, ConfigurationFactory factory, String name) {
+    public TesterTestMethodRunConfiguration(Project project, ConfigurationFactory factory, String name) {
         super(project, factory, name);
     }
 
@@ -22,12 +22,19 @@ public class TesterTestMethodRunConfiguration extends PhpScriptRunConfiguration 
 
     @Override
     public String suggestedName() {
-        String method = parseMethod();
-        return super.suggestedName() + (method != null ? " " + parseMethod() + "()" : "");
+        return super.suggestedName() + createSuggestedName(parseMethod());
+    }
+
+    public static String createSuggestedName(@Nullable String methodName) {
+        return methodName != null ? " " + methodName + "()" : "";
     }
 
     void setMethod(@NotNull Method method) {
-        getSettings().setScriptParameters(method.getName());
+        setMethodName(method.getName());
+    }
+
+    public void setMethodName(@NotNull String methodName) {
+        getSettings().setScriptParameters(methodName);
     }
 
     boolean isMethod(@NotNull Method method) {
@@ -35,7 +42,12 @@ public class TesterTestMethodRunConfiguration extends PhpScriptRunConfiguration 
     }
 
     @Nullable
-    private String parseMethod() {
+    public String getMethod() {
+        return parseMethod();
+    }
+
+    @Nullable
+    public String parseMethod() {
         return getSettings().getScriptParameters();
     }
 }
