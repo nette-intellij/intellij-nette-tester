@@ -134,7 +134,7 @@ public class TesterUtil {
             @NotNull NotificationType type,
             @Nullable Project project
     ) {
-        Notification notification = new Notification(NOTIFICATION_GROUP, title, content, NotificationType.ERROR);
+        Notification notification = new Notification(NOTIFICATION_GROUP, title, content, type);
         doNotify(notification, project);
     }
 

@@ -68,17 +68,17 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
 
     @Override
     public void inspectionFinished(@NotNull LocalInspectionToolSession session, @NotNull ProblemsHolder problemsHolder) {
-        if ( ! (session.getFile() instanceof PhpFile)) {
+        if (!(session.getFile() instanceof PhpFile)) {
             return;
         }
 
         testClasses.forEach((PhpClass testClass) -> {
-            if ( ! runReferencedClassNames.contains(testClass.getFQN())) {
-                ExtendsList extendsList = testClass.getExtendsList();
-                TextRange highlightRange = new TextRange(0, extendsList.getStartOffsetInParent() + extendsList.getTextLength());
+            if (!runReferencedClassNames.contains(testClass.getFQN())) {
                 problemsHolder.registerProblem(
-                    testClass, TesterBundle.message("inspections.runTestCase.description"), ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-                    highlightRange, ADD_RUN_METHOD_CALL_QUICK_FIX, ! testClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null
+                    testClass.getNameIdentifier() != null ? testClass.getNameIdentifier() : testClass,
+                    TesterBundle.message("inspections.runTestCase.description"),
+                    ADD_RUN_METHOD_CALL_QUICK_FIX,
+                    !testClass.isFinal() ? MAKE_ABSTRACT_QUICK_FIX : null
                 );
             }
         });
