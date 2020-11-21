@@ -132,7 +132,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
 
     @NotNull
     @Override
-    protected String getExtension() {
+    public String getExtension() {
         TesterProjectSettings settings = TesterUtil.getTesterSettings(getProject());
         return settings != null ? settings.getDefaultExtension() : "phpt";
     }

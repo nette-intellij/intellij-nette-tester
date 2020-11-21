@@ -1,0 +1,47 @@
+plugins {
+    id 'org.jetbrains.intellij' version "0.4.20"
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version '2.1.0'
+group 'cz.jiripudil.intellij.nette.tester'
+
+jar {
+    archiveName 'intellij-nette-tester-' + version + '.jar'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+runIde {
+    ideDirectory "${properties.getProperty('runIdeDirectory')}"
+}
+
+def htmlFixer = { htmlFile -> file(htmlFile).text.replace('<html>', '').replace('</html>', '') }
+
+patchPluginXml {
+    changeNotes = htmlFixer('src/main/resources/META-INF/change-notes.html')
+}
+
+apply plugin: 'org.jetbrains.intellij'
+
+intellij {
+    version ideaVersion
+    updateSinceUntilBuild false
+    plugins = [
+            "com.jetbrains.php:${phpPluginVersion}",
+            'java',
+            'properties'
+    ]
+    pluginName 'Nette Tester'
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}

@@ -105,7 +105,7 @@ public class TestFileNameInspection extends LocalInspectionTool {
                 }
 
                 try {
-                    virtualFile.rename(this, newName + "." + virtualFile.getExtension());
+                    virtualFile.rename(this, newName + "" + virtualFile.getExtension());
 
                 } catch (IOException e) {
                     LOG.error(e);

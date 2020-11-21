@@ -1,0 +1,83 @@
+<idea-plugin>
+  <id>cz.jiripudil.intellij.nette.tester</id>
+  <name>Nette Tester</name>
+
+  <vendor email="matous.nemec@mesour.com" url="https://jiripudil.cz">Jiří Pudil, Matouš Němec</vendor>
+  <resource-bundle>messages.TesterBundle</resource-bundle>
+
+  <description><![CDATA[
+    <a href="https://github.com/nette-intellij/intellij-nette-tester">Github</a>
+
+    <p>This plugin integrates <a href="https://tester.nette.org">Nette Tester</a>
+    into PhpStorm IDE.</p>
+  ]]></description>
+
+  <!-- http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges -->
+  <idea-version since-build="183.2153.8"/>
+
+  <!-- http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products -->
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.jetbrains.php</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationType"/>
+    <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfigurationProducer"/>
+
+    <configurationType implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationType"/>
+    <runConfigurationProducer implementation="cz.jiripudil.intellij.nette.tester.configuration.TesterTestMethodRunConfigurationProducer"/>
+
+    <analyzeStacktraceFilter implementation="cz.jiripudil.intellij.nette.tester.execution.TesterStackTraceFilter"/>
+
+    <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterRunLineMarkerProvider"/>
+    <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterMethodRunLineMarkerProvider"/>
+
+    <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>
+    <testCreator language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterTestCreator"/>
+    <internalFileTemplate name="Tester TestCase"/>
+    <backgroundPostStartupActivity implementation="cz.jiripudil.intellij.nette.tester.TesterPostStartupActivity"/>
+
+    <projectService serviceImplementation="cz.jiripudil.intellij.nette.tester.projectSettings.TesterProjectSettingsManager"/>
+    <projectConfigurable
+      instance="cz.jiripudil.intellij.nette.tester.projectSettings.TesterConfigurable"
+      displayName="Nette Tester"
+      id="cz.jiripudil.intellij.nette.tester.projectSettings.TesterConfigurable"
+      parentId="reference.webide.settings.project.settings.php"
+      groupWeight="25"
+      nonDefaultProject="true"
+    />
+
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestFileNameInspection"
+            groupName="Nette tester"
+            displayName="Test case files have correct names"
+            enabledByDefault="true"
+            level="ERROR"/>
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseAnnotationInspection"
+            groupName="Nette tester"
+            displayName="Test case has @testCase annotation"
+            enabledByDefault="true"
+            level="WARNING"/>
+    <localInspection
+            implementationClass="cz.jiripudil.intellij.nette.tester.inspections.TestCaseIsRunInspection"
+            groupName="Nette tester"
+            displayName="Test case is run"
+            enabledByDefault="true"
+            level="ERROR"/>
+  </extensions>
+
+  <actions>
+    <group id="TesterNewGroup" class="com.intellij.ide.actions.NonTrivialActionGroup" text="Nette Tester" popup="true" icon="PhpIcons.Phpunit">
+      <action id="TesterNewTestCase" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterNewTestCaseAction"/>
+      <add-to-group group-id="NewGroup" anchor="last"/>
+    </group>
+
+    <group id="TesterGenerateGroup">
+      <action id="TesterGenerateTestMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateTestMethodAction"/>
+      <action id="TesterGenerateSetupMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateSetupMethodAction"/>
+      <action id="TesterGenerateTeardownMethod" class="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterGenerateTeardownMethodAction"/>
+      <separator/>
+      <add-to-group group-id="GenerateGroup" anchor="first"/>
+    </group>
+  </actions>
+</idea-plugin>
