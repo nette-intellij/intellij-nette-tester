@@ -29,7 +29,7 @@ public class TesterProjectSettings {
     }
 
     public String getSetupFile() {
-        return testerVersion.equals("< 2.0") ? "setup.php" : "setup2-0.php";
+        return testerVersion.equals("< 2.0") ? "src/main/resources/setup.php" : "src/main/resources/setup2-0.php";
     }
 
     public void setTesterVersion(@NotNull String defaultExtension) {

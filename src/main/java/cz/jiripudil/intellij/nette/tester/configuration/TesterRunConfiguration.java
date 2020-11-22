@@ -1,9 +1,6 @@
 package cz.jiripudil.intellij.nette.tester.configuration;
 
-import com.intellij.execution.DefaultExecutionResult;
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
-import com.intellij.execution.Executor;
+import com.intellij.execution.*;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
@@ -18,15 +15,16 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.annotations.Attribute;
+import com.intellij.xdebugger.XDebugProcess;
+import com.intellij.xdebugger.XDebugSession;
 import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor;
 import com.jetbrains.php.config.commandLine.PhpCommandSettings;
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder;
 import com.jetbrains.php.config.interpreters.PhpInterpreter;
-import com.jetbrains.php.run.PhpCommandLineSettings;
-import com.jetbrains.php.run.PhpExecutionUtil;
-import com.jetbrains.php.run.PhpRefactoringListenerRunConfiguration;
-import com.jetbrains.php.run.PhpRunUtil;
+import com.jetbrains.php.debug.common.PhpDebugProcessFactory;
+import com.jetbrains.php.debug.xdebug.debugger.XdebugDriver;
+import com.jetbrains.php.run.*;
 import com.jetbrains.php.util.PhpConfigurationUtil;
 import com.jetbrains.php.util.pathmapper.PhpPathMapper;
 import cz.jiripudil.intellij.nette.tester.TesterBundle;
@@ -36,13 +34,17 @@ import cz.jiripudil.intellij.nette.tester.execution.TesterTestLocator;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.debugger.DebuggableRunConfiguration;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TesterRunConfiguration extends PhpRefactoringListenerRunConfiguration<TesterSettings> implements LocatableConfiguration {
+public class TesterRunConfiguration extends PhpRefactoringListenerRunConfiguration<TesterSettings> implements LocatableConfiguration, DebuggableRunConfiguration {
     private boolean isGenerated;
+    private String host = null;
 
     TesterRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
@@ -105,7 +107,7 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     @Override
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
         try {
-            return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), false));
+            return this.getState(executionEnvironment, this.createCommand(Collections.emptyMap(), Collections.emptyList(), true));
         } catch (CloneNotSupportedException e) {
             return null;
         }
@@ -293,5 +295,21 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
         });
 
         return pathsToUpdate;
+    }
+
+    @Override
+    public @NotNull InetSocketAddress computeDebugAddress(RunProfileState state) throws ExecutionException {
+        if (host == null) {
+            return new InetSocketAddress(InetAddress.getLoopbackAddress(), 9000);
+        }
+        else {
+            return new InetSocketAddress(host, 9000);
+        }
+    }
+
+    @Override
+    public @NotNull XDebugProcess createDebugProcess(@NotNull InetSocketAddress inetSocketAddress, @NotNull XDebugSession session, @Nullable ExecutionResult result, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
+        //XdebugDriver
+        return PhpDebugProcessFactory.forExternalConnection(session, inetSocketAddress.toString(), XdebugDriver.INSTANCE);
     }
 }

@@ -1,0 +1,75 @@
+<html>
+<h2>2.1.1</h2>
+<ul>
+    <li>Added Gradle (improvement for development)</li>
+    <li>Added completion for Nette tester annotations</li>
+    <li>Fixed typo (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/47">#47</a>)</li>
+    <li>Fixed bug in internalFileTemplate (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/50">#50</a>)</li>
+    <li>Fixed problems with tester class run (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/36">#36</a>)</li>
+</ul>
+
+<h2>2.1.0</h2>
+<ul>
+    <li>Added run line markers to run TestCase or test methods</li>
+    <li>Added support for run configuration in Docker</li>
+    <li>Added support for Nette Tester 2.0</li>
+    <li>Fixed Compatibility with PHPStorm 2019.2 (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/43">#43</a>)</li>
+    <li>Fixed bug java.lang.NullPointerException on phpstorm startup (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/45">#45</a>)</li>
+</ul>
+
+<h2>2.0.0-beta.3</h2>
+<ul>
+    <li>The Create Test dialog does not autoupdate the target namespace and directory if invoked from the directory context (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/26">#26</a>)</li>
+    <li>Added some handy inspections that make sure all your tests are actually executed (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/3">#3</a>, <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/32">#32</a>)</li>
+    <li>You can right-click a single test case file to run it (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/23">#23</a>)</li>
+    <li>Added support for <code>nette/tester@dev-master</code> for the time being (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/30">#30</a>)</li>
+    <li>Fixed: bootstrap relative path resolves correctly if the target directory does not exist (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/25">#25</a>)</li>
+    <li>Fixed: comparison failure reporting was broken on Unix systems</li>
+</ul>
+
+<h2>2.0.0-beta.2</h2>
+<p>I know I said this release branch would be feature-frozen, but... well... not just yet. I'm far too excited about bringing the new features to be able to postpone them. Semver doesn't play well with the plugin's distribution channel anyway. Here they come:</p>
+<ul>
+    <li>In the project settings, you can configure the path to your bootstrap file; it is then automatically required in the created test files (see <a href="https://github.com/nette-intellij/intellij-nette-tester/issues/20">#20</a> for instructions if it does not work right away)</li>
+    <li>You can now right-click a single <em>test method</em> to run or debug it in isolation (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/9">#9</a>)</li>
+    <li>Fixed: OutputHandler now recognizes and correctly parses the diff command generated on Windows (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/21">#21</a>)</li>
+    <li>Fixed: OutputHandler no longer reports unsuccessful builds as "terminated" (<a href="https://github.com/nette-intellij/intellij-nette-tester/issues/22">#22</a>)</li>
+</ul>
+
+<h2>2.0.0-beta.1</h2>
+<p><strong>After tens of hours of work, here comes a total rework of the plugin.</strong> This beta.1 release marks the feature freeze, now I'd like to focus on fixing bugs and releasing a stable version soon.</p>
+<ul>
+    <li>Most importantly, it no longer relies on a specific fork nette/tester. As of 2.0.0, the plugin <strong>supports all 1.* versions of Nette Tester.</strong> Hooray!</li>
+    <li>You can navigate between the class and its test, or create a test case for a class easily. The navigation is based on convention (class name + <code>Test</code> suffix), the creation assumes your tests reside in the same namespace as the code; if you use a different scheme, you can configure source to test namespace mapping in the project settings under PHP &gt; Nette Tester.</li>
+    <li>The plugin ships with a run configuration producer for directories, so you can right-click a directory and run the tests within it. For this to be truly one-click action, you should configure the Tester executable in the Nette Tester default run configuration template.</li>
+    <li>You can view the diff of comparison failures (<code>Assert::same()</code> and alike) right in the test results window.</li>
+    <li>Output stack traces are decorated with links to files, provided you set <code>Tester\Dumper::$maxPathSegments</code> to a high enough value in your test environment.</li>
+</ul>
+<p>To support a wide range of Tester versions, I had to drop a few features. However, they should, in some form or another, be back once <a href="https://github.com/nette/tester/pulls/345">OutputHandler</a> refactoring is resolved.</p>
+<ul>
+    <li>The plugin no longer groups TestCase methods in the test results window.</li>
+    <li>The plugin no longer lets you navigate to the tests from the test results window, nor run or debug them directly.</li>
+</ul>
+
+<h2>1.0.0-alpha.4</h2>
+<ul>
+    <li>Fixed compatibility with PhpStorm 2016.3.</li>
+</ul>
+
+<h2>1.0.0-alpha.3</h2>
+<ul>
+    <li>Fixed compatibility with PhpStorm 2016.3.</li>
+</ul>
+
+<h2>1.0-alpha2</h2>
+<ul>
+    <li>Fixed compatibility with PhpStorm 2016.1.</li>
+</ul>
+
+<h2>1.0-alpha</h2>
+<p>Initial alpha version with basic capabilities:</p>
+<ul>
+    <li>Tester run configuration type and editor.</li>
+    <li>Displays results in the Test Runner window.</li>
+</ul>
+</html>
