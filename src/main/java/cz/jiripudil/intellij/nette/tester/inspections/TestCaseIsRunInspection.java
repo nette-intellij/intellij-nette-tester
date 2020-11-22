@@ -10,9 +10,9 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory;
-import com.jetbrains.php.lang.psi.elements.ExtendsList;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.Statement;
@@ -21,6 +21,7 @@ import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import cz.jiripudil.intellij.nette.tester.TesterUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -58,7 +59,7 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
 
     @Override
     public void inspectionStarted(@NotNull LocalInspectionToolSession session, boolean isOnTheFly) {
-        if ( ! (session.getFile() instanceof PhpFile)) {
+        if (!(session.getFile() instanceof PhpFile)) {
             return;
         }
 
@@ -101,16 +102,15 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
 
         @Override
         public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor problemDescriptor) {
-            PsiElement element = problemDescriptor.getPsiElement();
-            if ( ! (element instanceof PhpClass)) {
+            PhpClass phpClass = getPhpClassElement(problemDescriptor.getPsiElement());
+            if (phpClass == null) {
                 return;
             }
 
-            PsiFile containingFile = element.getContainingFile();
+            PsiFile containingFile = phpClass.getContainingFile();
             PsiDocumentManager manager = PsiDocumentManager.getInstance(project);
             Document document = manager.getDocument(containingFile);
 
-            PhpClass phpClass = (PhpClass) element;
             String template = "\n\n(new " + phpClass.getName() + "())->run();";
             Statement runMethodCall = PhpPsiElementFactory.createStatement(project, template);
 
@@ -141,16 +141,15 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
 
         @Override
         public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor problemDescriptor) {
-            PsiElement element = problemDescriptor.getPsiElement();
-            if ( ! (element instanceof PhpClass)) {
+            PhpClass phpClass = getPhpClassElement(problemDescriptor.getPsiElement());
+            if (phpClass == null) {
                 return;
             }
 
-            PsiFile containingFile = element.getContainingFile();
+            PsiFile containingFile = phpClass.getContainingFile();
             PsiDocumentManager manager = PsiDocumentManager.getInstance(project);
             Document document = manager.getDocument(containingFile);
 
-            PhpClass phpClass = (PhpClass) element;
             PsiElement abstractKeyword = PhpPsiElementFactory.createFromText(project, LeafPsiElement.class, "abstract");
             if (abstractKeyword == null) {
                 return;
@@ -164,5 +163,10 @@ public class TestCaseIsRunInspection extends LocalInspectionTool {
                 CodeStyleManager.getInstance(project).reformatText(containingFile, reformatRange.getStartOffset(), reformatRange.getEndOffset());
             }
         }
+    }
+
+    @Nullable
+    private static PhpClass getPhpClassElement(PsiElement element) {
+        return element instanceof PhpClass ? (PhpClass) element : PsiTreeUtil.getParentOfType(element, PhpClass.class);
     }
 }
