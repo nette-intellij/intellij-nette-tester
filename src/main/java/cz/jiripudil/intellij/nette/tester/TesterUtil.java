@@ -12,6 +12,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpClassHierarchyUtils;
@@ -144,6 +145,11 @@ public class TesterUtil {
             }
         }
         return null;
+    }
+
+    public static boolean hasValidFileName(VirtualFile file) {
+        return "phpt".equals(file.getExtension())
+                || ("php".equals(file.getExtension()) && StringUtil.endsWith(file.getNameWithoutExtension(), "Test"));
     }
 
     public static void doNotify(

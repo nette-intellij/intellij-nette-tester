@@ -31,6 +31,8 @@
     <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterRunLineMarkerProvider"/>
     <runLineMarkerContributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.lineMarker.TesterMethodRunLineMarkerProvider"/>
 
+    <completion.contributor language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.completion.PhpDocCompletionContributor"/>
+
     <testFinder implementation="cz.jiripudil.intellij.nette.tester.TesterTestFinder"/>
     <testCreator language="PHP" implementationClass="cz.jiripudil.intellij.nette.tester.codeGeneration.TesterTestCreator"/>
     <internalFileTemplate name="Tester TestCase"/>
