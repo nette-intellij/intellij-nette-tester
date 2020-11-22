@@ -12,8 +12,11 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpClassHierarchyUtils;
 import com.jetbrains.php.lang.PhpLangUtil;
+import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import cz.jiripudil.intellij.nette.tester.configuration.TesterRunConfiguration;
@@ -126,6 +129,21 @@ public class TesterUtil {
             }
         }
         return configurations;
+    }
+
+    /**
+     * Returns a doc. comment from which Nette Tester reads annotations.
+     * Nette Tester reads them from first unindented doc. comment.
+     * @see <a href="https://github.com/nette/tester/blob/v1.7.1/src/Framework/Helpers.php#L42">Comment parsing</a>
+     */
+    @Nullable
+    public static PhpDocComment findDocCommentRedByTester(PsiFile file) {
+        for (PhpDocComment comment: PsiTreeUtil.findChildrenOfType(file, PhpDocComment.class)) {
+            if (comment.getPrevSibling().getText().endsWith("\n")) {
+                return comment;
+            }
+        }
+        return null;
     }
 
     public static void doNotify(

@@ -28,14 +28,18 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
         return new PhpElementVisitor() {
             @Override
             public void visitPhpClass(PhpClass phpClass) {
-                if ( ! TesterUtil.isTestClass(phpClass)) {
-                    return;
-                }
+            if (!TesterUtil.isTestClass(phpClass)) {
+                return;
+            }
 
-                PhpDocComment docComment = phpClass.getDocComment();
-                if (phpClass.getIdentifyingElement() != null && (docComment == null || docComment.getTagElementsByName("@testCase").length == 0)) {
-                    holder.registerProblem(phpClass.getIdentifyingElement(), TesterBundle.message("inspections.annotation.description"), QUICK_FIX);
-                }
+            PhpDocComment docComment = TesterUtil.findDocCommentRedByTester(phpClass.getContainingFile());
+            if (phpClass.getIdentifyingElement() != null && (docComment == null || docComment.getTagElementsByName("@testCase").length == 0)) {
+                holder.registerProblem(
+                    phpClass.getNameIdentifier() != null ? phpClass.getNameIdentifier() : phpClass,
+                    TesterBundle.message("inspections.annotation.description"),
+                    QUICK_FIX
+                );
+            }
             }
         };
     }
@@ -67,7 +71,7 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
             PsiElement testCaseTag = PhpPsiElementFactory.createFromText(project, PhpDocTag.class, template);
             assert testCaseTag != null;
 
-            PhpDocComment docComment = phpClass.getDocComment();
+            PhpDocComment docComment = TesterUtil.findDocCommentRedByTester(phpClass.getContainingFile());
             if (docComment == null) {
                 PsiElement testCaseDocComment = PhpPsiElementFactory.createFromText(project, PhpDocComment.class, template);
                 assert testCaseDocComment != null;
@@ -88,7 +92,7 @@ public class TestCaseAnnotationInspection extends LocalInspectionTool {
                     insertAfter = insertAfter.getPrevSibling();
                     int offset = insertAfter.getTextRange().getStartOffset();
                     PsiElement insertedLF = null;
-                    if (insertAfter instanceof PsiWhiteSpace && ! insertAfter.textContains('\n') && lineFeed != null) {
+                    if (insertAfter instanceof PsiWhiteSpace && !insertAfter.textContains('\n') && lineFeed != null) {
                         insertedLF = docComment.addAfter(lineFeed, insertAfter);
                     }
 
