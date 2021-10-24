@@ -1,9 +1,9 @@
 package cz.jiripudil.intellij.nette.tester.configuration;
 
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.actions.RunConfigurationProducer;
-import com.intellij.ide.scratch.ScratchFileType;
-import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.execution.actions.LazyRunConfigurationProducer;
+import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.ide.scratch.ScratchUtil;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
@@ -16,23 +16,28 @@ import com.jetbrains.php.lang.psi.PhpPsiUtil;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.run.script.PhpScriptRunConfiguration;
 import cz.jiripudil.intellij.nette.tester.TesterUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TesterTestMethodRunConfigurationProducer extends RunConfigurationProducer<TesterTestMethodRunConfiguration> {
+public class TesterTestMethodRunConfigurationProducer extends LazyRunConfigurationProducer<TesterTestMethodRunConfiguration> {
     protected TesterTestMethodRunConfigurationProducer() {
-        super(TesterTestMethodRunConfigurationType.getInstance());
+        super();
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(TesterTestMethodRunConfiguration runConfiguration, ConfigurationContext context, Ref<PsiElement> ref) {
+    protected boolean setupConfigurationFromContext(
+            @NotNull TesterTestMethodRunConfiguration runConfiguration,
+            ConfigurationContext context,
+            @NotNull Ref<PsiElement> ref
+    ) {
         PsiElement element = context.getPsiLocation();
         Method method = PhpPsiUtil.getParentByCondition(element, parent -> parent instanceof Method);
 
-        if (method != null && isValid(method)) {
+        if (isValid(method)) {
             VirtualFile file = method.getContainingFile().getVirtualFile();
             ref.set(method);
 
-            if (!FileTypeManager.getInstance().isFileOfType(file, ScratchFileType.INSTANCE)) {
+            if (!ScratchUtil.isScratch(file)) {
                 VirtualFile root = ProjectRootManager.getInstance(element.getProject()).getFileIndex().getContentRootForFile(file);
                 if (root == null) {
                     return false;
@@ -50,11 +55,11 @@ public class TesterTestMethodRunConfigurationProducer extends RunConfigurationPr
     }
 
     @Override
-    public boolean isConfigurationFromContext(TesterTestMethodRunConfiguration runConfiguration, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(@NotNull TesterTestMethodRunConfiguration runConfiguration, ConfigurationContext context) {
         PsiElement element = context.getPsiLocation();
         Method method = PhpPsiUtil.getParentByCondition(element, parent -> parent instanceof Method);
 
-        if (method != null && isValid(method)) {
+        if (isValid(method)) {
             VirtualFile containingVirtualFile = method.getContainingFile().getVirtualFile();
             PhpScriptRunConfiguration.Settings settings = runConfiguration.getSettings();
             String path = settings.getPath();
@@ -81,5 +86,11 @@ public class TesterTestMethodRunConfigurationProducer extends RunConfigurationPr
         return containingFile != null
             && containingFile.getFileType() == PhpFileType.INSTANCE
             && containingFile.getVirtualFile() != null;
+    }
+
+    @NotNull
+    @Override
+    public ConfigurationFactory getConfigurationFactory() {
+        return TesterTestMethodRunConfigurationType.createFactory();
     }
 }

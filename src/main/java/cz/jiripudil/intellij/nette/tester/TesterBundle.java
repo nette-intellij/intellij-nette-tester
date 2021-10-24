@@ -1,6 +1,6 @@
 package cz.jiripudil.intellij.nette.tester;
 
-import com.intellij.CommonBundle;
+import com.intellij.AbstractBundle;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
@@ -15,6 +15,6 @@ public class TesterBundle {
     }
 
     public static String message(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, Object... params) {
-        return CommonBundle.message(BUNDLE, key, params);
+        return AbstractBundle.message(BUNDLE, key, params);
     }
 }

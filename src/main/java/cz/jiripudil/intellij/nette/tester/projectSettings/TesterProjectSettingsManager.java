@@ -18,7 +18,7 @@ public class TesterProjectSettingsManager implements PersistentStateComponent<Te
 
     @NotNull
     public static TesterProjectSettingsManager getInstance(@NotNull Project project) {
-        return ServiceManager.getService(project, TesterProjectSettingsManager.class);
+        return project.getService(TesterProjectSettingsManager.class);
     }
 
     @Nullable
@@ -28,7 +28,7 @@ public class TesterProjectSettingsManager implements PersistentStateComponent<Te
     }
 
     @Override
-    public void loadState(TesterProjectSettings settings) {
+    public void loadState(@NotNull TesterProjectSettings settings) {
         this.settings = settings;
     }
 }

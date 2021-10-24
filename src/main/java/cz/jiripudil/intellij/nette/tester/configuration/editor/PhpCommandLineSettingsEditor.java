@@ -32,7 +32,6 @@ public class PhpCommandLineSettingsEditor extends SettingsEditor<TesterRunConfig
 
     private void createUIComponents() {
         interpreterOptions = new RawCommandLineEditor();
-        interpreterOptions.setDialogCaption("Options");
 
         customWorkingDirectory = new TextFieldWithBrowseButton();
         customWorkingDirectory.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFolderDescriptor());

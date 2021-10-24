@@ -64,7 +64,6 @@ public class TesterSettingsEditor extends SettingsEditor<TesterRunConfiguration>
         testerExecutable.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor());
 
         testerOptions = new RawCommandLineEditor();
-        testerOptions.setDialogCaption("Options");
 
         userSetupScript = new TextFieldWithBrowseButton();
         userSetupScript.addBrowseFolderListener(null, null, project, FileChooserDescriptorFactory.createSingleFileDescriptor("php"));

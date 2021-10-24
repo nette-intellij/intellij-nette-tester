@@ -206,14 +206,12 @@ public class TesterRunConfiguration extends PhpRefactoringListenerRunConfigurati
     public void readExternal(Element element) throws InvalidDataException {
         super.readExternal(element);
 
-        if (!isNewSerializationUsed()) {
-            isGenerated = "true".equals(element.getAttributeValue("isGeneratedName"));
-        }
+        isGenerated = "true".equals(element.getAttributeValue("isGeneratedName"));
     }
 
     @Override
     public void writeExternal(@NotNull Element element) throws WriteExternalException {
-        if (!isNewSerializationUsed() && isGeneratedName()) {
+        if (isGeneratedName()) {
             element.setAttribute("isGeneratedName", "true");
         }
 

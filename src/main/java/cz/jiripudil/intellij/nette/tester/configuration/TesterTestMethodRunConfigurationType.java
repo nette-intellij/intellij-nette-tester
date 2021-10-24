@@ -11,8 +11,10 @@ import cz.jiripudil.intellij.nette.tester.TesterBundle;
 import org.jetbrains.annotations.NotNull;
 
 public class TesterTestMethodRunConfigurationType extends ConfigurationTypeBase {
+    final static private @NotNull String ID = "nette-tester-method";
+
     protected TesterTestMethodRunConfigurationType() {
-        super("nette-tester-method", TesterBundle.message("configurationType.method.displayName"), TesterBundle.message("configurationType.method.description"), PhpIcons.PHP_TEST_METHOD);
+        super(ID, TesterBundle.message("configurationType.method.displayName"), TesterBundle.message("configurationType.method.description"), PhpIcons.PHP_TEST_METHOD);
         this.addFactory(createFactory(this));
     }
 
@@ -25,7 +27,7 @@ public class TesterTestMethodRunConfigurationType extends ConfigurationTypeBase 
     }
 
     public static ConfigurationFactory createFactory(TesterTestMethodRunConfigurationType type) {
-        return new PhpRunConfigurationFactoryBase(type) {
+        return new PhpRunConfigurationFactoryBase(type, ID) {
             @NotNull
             @Override
             public RunConfiguration createTemplateConfiguration(@NotNull Project project) {

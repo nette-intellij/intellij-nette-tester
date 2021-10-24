@@ -1,8 +1,8 @@
 package cz.jiripudil.intellij.nette.tester.codeGeneration;
 
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.event.DocumentAdapter;
 import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.fileTypes.FileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectFileIndex;
@@ -59,7 +59,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
         super(project, directory);
         this.init(contentPane, nameTextField, namespaceComboBox, namespaceCompletionHint, fileNameTextField, directoryComboBox, directoryCompletionHint);
 
-        testTargetTextField.addDocumentListener(new DocumentAdapter() {
+        testTargetTextField.addDocumentListener(new DocumentListener() {
             @Override
             public void documentChanged(DocumentEvent e) {
                 TesterNewTestCaseDialog.this.addUpdateRequest(() -> {
@@ -81,7 +81,7 @@ public class TesterNewTestCaseDialog extends PhpBaseNewClassDialog {
                 });
             }
         });
-        PhpCompletionUtil.installClassCompletion(testTargetTextField, null, this.getDisposable());
+        PhpCompletionUtil.installClassCompletion(testTargetTextField, null, this.getDisposable(), null);
 
         String codeCompletionShortcut = PhpUiUtil.getShortcutTextByActionName("CodeCompletion");
         testTargetCompletionHint.setText(TesterBundle.message("dialog.newTestCase.completionShortcut", codeCompletionShortcut, "class reference"));
